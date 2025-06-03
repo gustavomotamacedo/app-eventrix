@@ -33,7 +33,6 @@ import {
   History
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface SidebarItemProps {
@@ -188,18 +187,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {!isCollapsed && (
-        <div className="px-4 mb-4">
-          <Button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90" asChild>
-            <Link to="/events/new">
-              <Plus size={16} className="mr-2" />
-              Novo Evento
-            </Link>
-          </Button>
-        </div>
-      )}
-
-      <div className="flex-1 overflow-y-auto pt-2 px-3">
+      <div className="flex-1 pt-2 px-3">
         <nav className="space-y-2">
           {/* Main Navigation */}
           {mainNavigation.map((item) => (
