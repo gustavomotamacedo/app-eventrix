@@ -25,7 +25,7 @@ const Login = () => {
       {/* Left side - Brand */}
       <div className="bg-primary w-full md:w-1/2 text-primary-foreground p-8 flex flex-col justify-between">
         <div>
-          <h1 className="text-3xl font-bold">HUBX™</h1>
+          <h1 className="text-3xl font-bold">Eventrix™</h1>
           <p className="text-primary-foreground/80 mt-2">Plataforma completa para gestão de eventos</p>
         </div>
         
@@ -54,7 +54,7 @@ const Login = () => {
         </div>
         
         <div className="hidden md:block text-sm text-primary-foreground/70">
-          &copy; {new Date().getFullYear()} HUBX™. Todos os direitos reservados.
+          &copy; {new Date().getFullYear()} Eventrix™. Todos os direitos reservados.
         </div>
       </div>
       

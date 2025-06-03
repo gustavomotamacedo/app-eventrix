@@ -59,7 +59,7 @@ const Sidebar = () => {
       <div className="flex items-center h-16 px-4">
         {!isCollapsed && (
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-sidebar-foreground">HUBX™</h1>
+            <h1 className="text-xl font-bold text-sidebar-foreground">Eventrix™</h1>
           </div>
         )}
         <button
