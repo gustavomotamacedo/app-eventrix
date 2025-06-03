@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -170,10 +169,10 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "flex flex-col h-screen bg-sidebar text-sidebar-foreground transition-all",
+      "flex flex-col bg-sidebar text-sidebar-foreground transition-all min-h-full",
       isCollapsed ? "w-16" : "w-72"
     )}>
-      <div className="flex items-center h-16 px-4">
+      <div className="flex items-center h-16 px-4 sticky top-0 bg-sidebar z-10">
         {!isCollapsed && (
           <div className="flex-1">
             <h1 className="text-xl font-bold text-sidebar-foreground">Eventrix™</h1>
@@ -187,7 +186,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="flex-1 pt-2 px-3">
+      <div className="flex-1 pt-2 px-3 pb-20">
         <nav className="space-y-2">
           {/* Main Navigation */}
           {mainNavigation.map((item) => (
@@ -404,7 +403,7 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="p-3">
+      <div className="p-3 sticky bottom-0 bg-sidebar">
         <div className={cn(
           "hubx-sidebar-item mt-auto cursor-pointer",
           isCollapsed ? "justify-center" : ""
