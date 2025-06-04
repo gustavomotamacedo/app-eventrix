@@ -35,7 +35,7 @@ import {
   FileText,
   Globe,
   Bot,
-  Link,
+  Link as LinkIcon,
   Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -161,7 +161,7 @@ const Sidebar = () => {
 
   const comunicacaoGroup = [
     { icon: <Bot size={16} />, label: 'HumanGPT', to: '/communication/humangpt' },
-    { icon: <Link size={16} />, label: 'LinkAI', to: '/communication/linkai' },
+    { icon: <LinkIcon size={16} />, label: 'LinkAI', to: '/communication/linkai' },
     { icon: <Bell size={16} />, label: 'Notificações', to: '/communication/notifications' },
   ];
 
