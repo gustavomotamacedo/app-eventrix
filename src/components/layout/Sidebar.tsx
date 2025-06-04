@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -168,6 +167,9 @@ const Sidebar = () => {
   const analyticsGroup = [
     { icon: <BarChart3 size={16} />, label: 'Dashboards', to: '/analytics' },
     { icon: <TrendingUp size={16} />, label: 'Relatórios', to: '/reports' },
+    { icon: <MessageSquare size={16} />, label: 'NPS & Feedbacks', to: '/analytics/nps' },
+    { icon: <Activity size={16} />, label: 'Mapa de Calor', to: '/analytics/heatmap' },
+    { icon: <Zap size={16} />, label: 'Engajamento', to: '/analytics/engagement' },
   ];
 
   const integracaoGroup = [

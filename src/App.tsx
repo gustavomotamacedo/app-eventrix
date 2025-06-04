@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -35,6 +36,11 @@ import MarketingPages from "./pages/MarketingPages";
 import CommunicationHumanGPT from "./pages/CommunicationHumanGPT";
 import CommunicationLinkAI from "./pages/CommunicationLinkAI";
 import CommunicationNotifications from "./pages/CommunicationNotifications";
+import Analytics from "./pages/Analytics";
+import Reports from "./pages/Reports";
+import AnalyticsNPS from "./pages/AnalyticsNPS";
+import AnalyticsHeatmap from "./pages/AnalyticsHeatmap";
+import AnalyticsEngagement from "./pages/AnalyticsEngagement";
 
 const queryClient = new QueryClient();
 
