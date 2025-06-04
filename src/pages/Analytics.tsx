@@ -1,77 +1,104 @@
 
-import React, { useState } from 'react';
-import { BarChart3, Users, Calendar, TrendingUp, DollarSign, Eye, Target, ArrowUpRight, ArrowDownRight, Filter, Download, RefreshCw } from 'lucide-react';
+import React from 'react';
+import { BarChart3, TrendingUp, Users, DollarSign, Calendar, Filter, Download } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import KpiCard from '@/components/ui-custom/KpiCard';
 import ChartCard from '@/components/ui-custom/ChartCard';
+import KpiCard from '@/components/ui-custom/KpiCard';
 
 const Analytics = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('7d');
-  const [selectedEvent, setSelectedEvent] = useState('all');
+  const eventsData = [
+    { name: 'Jan', visitantes: 1200, expositores: 35 },
+    { name: 'Fev', visitantes: 1900, expositores: 42 },
+    { name: 'Mar', visitantes: 1700, expositores: 45 },
+    { name: 'Abr', visitantes: 2400, expositores: 50 },
+    { name: 'Mai', visitantes: 2800, expositores: 53 },
+    { name: 'Jun', visitantes: 3500, expositores: 58 }
+  ];
 
-  // Dados simulados para os KPIs
-  const kpiData = [
+  const satisfactionData = [
+    { name: 'Muito satisfeito', value: 45 },
+    { name: 'Satisfeito', value: 32 },
+    { name: 'Neutro', value: 15 },
+    { name: 'Insatisfeito', value: 5 },
+    { name: 'Muito insatisfeito', value: 3 }
+  ];
+
+  const conversionData = [
+    { name: 'Impressões', value: 12500 },
+    { name: 'Cliques', value: 4300 },
+    { name: 'Registros', value: 2100 },
+    { name: 'Compras', value: 1450 }
+  ];
+
+  const topPerformers = [
     {
-      title: 'Total de Visitantes',
-      value: '12,487',
-      icon: <Users />,
-      trend: { value: 12.5, isPositive: true }
+      name: 'Tech Summit 2023',
+      id: 'TS2023',
+      metricValue: 4850,
+      metricLabel: 'visitantes',
+      trend: '+15.2%',
+      status: 'success'
     },
     {
-      title: 'Taxa de Engajamento',
-      value: '87.2%',
-      icon: <Target />,
-      trend: { value: 5.8, isPositive: true }
+      name: 'Expo Inovação',
+      id: 'EI2023',
+      metricValue: 3427,
+      metricLabel: 'visitantes',
+      trend: '+8.7%',
+      status: 'success'
     },
     {
-      title: 'ROI Médio',
-      value: '324%',
-      icon: <TrendingUp />,
-      trend: { value: 15.3, isPositive: true }
+      name: 'DevCon 2023',
+      id: 'DC2023',
+      metricValue: 2980,
+      metricLabel: 'visitantes',
+      trend: '+5.3%',
+      status: 'success'
     },
     {
-      title: 'Receita Total',
-      value: 'R$ 2.8M',
-      icon: <DollarSign />,
-      trend: { value: 8.7, isPositive: true }
+      name: 'Marketing Summit',
+      id: 'MS2023',
+      metricValue: 2145,
+      metricLabel: 'visitantes',
+      trend: '-2.1%',
+      status: 'danger'
     }
   ];
 
-  // Dados para gráficos
-  const visitorsData = [
-    { name: 'Seg', value: 1200 },
-    { name: 'Ter', value: 1850 },
-    { name: 'Qua', value: 2100 },
-    { name: 'Qui', value: 2800 },
-    { name: 'Sex', value: 3200 },
-    { name: 'Sáb', value: 2900 },
-    { name: 'Dom', value: 1800 }
+  const roiInsights = [
+    {
+      stakeholder: 'Expositores',
+      roi: 3.8,
+      investimento: 'R$ 45.000',
+      retorno: 'R$ 171.000',
+      trend: '+12.4%'
+    },
+    {
+      stakeholder: 'Patrocinadores',
+      roi: 4.2,
+      investimento: 'R$ 120.000',
+      retorno: 'R$ 504.000',
+      trend: '+8.7%'
+    },
+    {
+      stakeholder: 'Organizadores',
+      roi: 2.7,
+      investimento: 'R$ 230.000',
+      retorno: 'R$ 621.000',
+      trend: '+3.5%'
+    }
   ];
 
-  const engagementData = [
-    { name: 'Palestras', value: 85 },
-    { name: 'Networking', value: 72 },
-    { name: 'Exposições', value: 91 },
-    { name: 'Workshops', value: 68 },
-    { name: 'Demos', value: 79 }
-  ];
-
-  const roiByCategory = [
-    { name: 'Patrocinadores', value: 450 },
-    { name: 'Expositores', value: 320 },
-    { name: 'Organizadores', value: 280 },
-    { name: 'Fornecedores', value: 195 }
-  ];
-
-  const predictiveMetrics = [
-    { metric: 'Visitantes Previstos (Próx. Semana)', value: '15,200', change: '+21.7%' },
-    { metric: 'ROI Projetado (Q1)', value: '385%', change: '+19.1%' },
-    { metric: 'Receita Estimada (Próx. Mês)', value: 'R$ 3.4M', change: '+21.4%' },
-    { metric: 'Taxa de Conversão Esperada', value: '92.3%', change: '+5.9%' }
+  const marketingChannels = [
+    { name: 'Email', value: 35 },
+    { name: 'Redes Sociais', value: 28 },
+    { name: 'SEO/Orgânico', value: 18 },
+    { name: 'Ads', value: 12 },
+    { name: 'Referências', value: 7 }
   ];
 
   return (
@@ -80,149 +107,195 @@ const Analytics = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
-            <p className="text-muted-foreground">Visão completa do desempenho dos seus eventos</p>
+            <h1 className="text-3xl font-bold">Dashboard Analytics</h1>
+            <p className="text-muted-foreground">Visão geral de performance e insights dos seus eventos</p>
           </div>
           <div className="flex gap-2">
-            <Select value={selectedEvent} onValueChange={setSelectedEvent}>
+            <Select defaultValue="all">
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Selecionar evento" />
+                <SelectValue placeholder="Filtrar por evento" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os Eventos</SelectItem>
-                <SelectItem value="tech-summit">Tech Summit 2024</SelectItem>
-                <SelectItem value="business-expo">Business Expo</SelectItem>
+                <SelectItem value="all">Todos os eventos</SelectItem>
+                <SelectItem value="TS2023">Tech Summit 2023</SelectItem>
+                <SelectItem value="EI2023">Expo Inovação</SelectItem>
+                <SelectItem value="DC2023">DevCon 2023</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7d">7 dias</SelectItem>
-                <SelectItem value="30d">30 dias</SelectItem>
-                <SelectItem value="90d">90 dias</SelectItem>
-                <SelectItem value="1y">1 ano</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="outline" size="icon">
-              <RefreshCw className="h-4 w-4" />
-            </Button>
             <Button variant="outline">
+              <Filter className="h-4 w-4 mr-2" />
+              Filtros
+            </Button>
+            <Button>
               <Download className="h-4 w-4 mr-2" />
               Exportar
             </Button>
           </div>
         </div>
 
-        {/* KPIs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {kpiData.map((kpi, index) => (
-            <KpiCard
-              key={index}
-              title={kpi.title}
-              value={kpi.value}
-              icon={kpi.icon}
-              trend={kpi.trend}
-            />
-          ))}
+        {/* KPIs principais */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <KpiCard
+            title="Total de Visitantes"
+            value="12,456"
+            icon={<Users />}
+            trend={{ value: 12.5, isPositive: true }}
+          />
+          <KpiCard
+            title="Eventos Realizados"
+            value="8"
+            icon={<Calendar />}
+            trend={{ value: 3, isPositive: true }}
+          />
+          <KpiCard
+            title="Taxa de Conversão"
+            value="23.4%"
+            icon={<TrendingUp />}
+            trend={{ value: 4.7, isPositive: true }}
+          />
+          <KpiCard
+            title="Receita Total"
+            value="R$ 1.2M"
+            icon={<DollarSign />}
+            trend={{ value: 8.3, isPositive: true }}
+          />
         </div>
 
-        {/* Tabs para diferentes análises */}
+        {/* Gráficos principais */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartCard
+            title="Crescimento de Eventos"
+            subtitle="Visitantes e Expositores nos últimos 6 meses"
+            type="bar"
+            data={eventsData}
+            height={300}
+          />
+          <ChartCard
+            title="Satisfação dos Participantes"
+            subtitle="Distribuição de feedback recebido"
+            type="pie"
+            data={satisfactionData}
+            height={300}
+          />
+        </div>
+
+        {/* Tabs para diferentes métricas */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-            <TabsTrigger value="audience">Audiência</TabsTrigger>
-            <TabsTrigger value="roi">ROI & Financeiro</TabsTrigger>
-            <TabsTrigger value="predictive">Análise Preditiva</TabsTrigger>
+            <TabsTrigger value="performance">Performance</TabsTrigger>
+            <TabsTrigger value="roi">ROI</TabsTrigger>
+            <TabsTrigger value="predictions">Previsões IA</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <ChartCard
-                title="Visitantes por Dia"
-                subtitle="Evolução diária de visitantes"
-                type="line"
-                data={visitorsData}
-                height={350}
-              />
-              <ChartCard
-                title="Engajamento por Atividade"
-                subtitle="Taxa de participação (%)"
+                title="Funil de Conversão"
+                subtitle="Da impressão à compra de ingressos"
                 type="bar"
-                data={engagementData}
-                height={350}
+                data={conversionData}
+                height={300}
               />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Eventos com Melhor Performance</CardTitle>
+                  <CardDescription>Baseado em número de participantes</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {topPerformers.map((item, index) => (
+                      <div key={index} className="flex items-center">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl font-bold">{index + 1}</span>
+                            <div>
+                              <p className="font-medium">{item.name}</p>
+                              <p className="text-sm text-muted-foreground">ID: {item.id}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-semibold">{item.metricValue.toLocaleString()}</p>
+                          <div className="flex items-center gap-1 justify-end">
+                            <span className={`text-xs ${
+                              item.status === 'success' ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {item.trend}
+                            </span>
+                            <p className="text-xs text-muted-foreground">{item.metricLabel}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-
-            {/* Métricas em tempo real */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
-                  Métricas em Tempo Real
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-green-600">847</div>
-                    <div className="text-sm text-muted-foreground">Visitantes Online</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-600">23</div>
-                    <div className="text-sm text-muted-foreground">Sessões Ativas</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-purple-600">156</div>
-                    <div className="text-sm text-muted-foreground">Interações/min</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
-          <TabsContent value="audience" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2">
+          <TabsContent value="performance" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
                 <CardHeader>
-                  <CardTitle>Demografia da Audiência</CardTitle>
+                  <CardTitle>Audiência por Origem</CardTitle>
+                  <CardDescription>Canais de marketing</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>25-34 anos</span>
-                      <span>42%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: '42%' }}></div>
-                    </div>
+                <CardContent>
+                  <div className="pt-2">
+                    {marketingChannels.map((channel, index) => (
+                      <div key={index} className="mb-4">
+                        <div className="flex justify-between mb-1">
+                          <span className="text-sm font-medium">{channel.name}</span>
+                          <span className="text-sm font-bold">{channel.value}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full" 
+                            style={{ width: `${channel.value}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>35-44 anos</span>
-                      <span>31%</span>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Engajamento do Evento</CardTitle>
+                  <CardDescription>Baseado nas últimas 3 edições</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">Tempo Médio no Evento</span>
+                        <Badge>4.2h</Badge>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-600 h-2 rounded-full" style={{ width: '84%' }}></div>
+                      </div>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-green-600 h-2 rounded-full" style={{ width: '31%' }}></div>
+                    
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">Participação em Atividades</span>
+                        <Badge>67%</Badge>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-green-600 h-2 rounded-full" style={{ width: '67%' }}></div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>45-54 anos</span>
-                      <span>18%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-yellow-600 h-2 rounded-full" style={{ width: '18%' }}></div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Outros</span>
-                      <span>9%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-purple-600 h-2 rounded-full" style={{ width: '9%' }}></div>
+                    
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">Interação com Expositores</span>
+                        <Badge>78%</Badge>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: '78%' }}></div>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -230,24 +303,31 @@ const Analytics = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Top Setores</CardTitle>
+                  <CardTitle>Satisfação</CardTitle>
+                  <CardDescription>NPS e métricas de qualidade</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Tecnologia</span>
-                    <Badge>34%</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Saúde</span>
-                    <Badge variant="secondary">28%</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Educação</span>
-                    <Badge variant="secondary">22%</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Financeiro</span>
-                    <Badge variant="secondary">16%</Badge>
+                <CardContent>
+                  <div className="space-y-6 text-center">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Score NPS</p>
+                      <div className="text-4xl font-bold text-green-600">72</div>
+                      <p className="text-xs text-muted-foreground">(Excelente)</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="bg-green-50 p-3 rounded-lg">
+                        <p className="text-3xl font-bold text-green-600">64%</p>
+                        <p className="text-xs text-green-700">Promotores</p>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded-lg">
+                        <p className="text-3xl font-bold text-gray-600">28%</p>
+                        <p className="text-xs text-gray-700">Neutros</p>
+                      </div>
+                      <div className="bg-red-50 p-3 rounded-lg">
+                        <p className="text-3xl font-bold text-red-600">8%</p>
+                        <p className="text-xs text-red-700">Detratores</p>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -255,117 +335,145 @@ const Analytics = () => {
           </TabsContent>
 
           <TabsContent value="roi" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ChartCard
-                title="ROI por Categoria"
-                subtitle="Retorno sobre investimento (%)"
-                type="bar"
-                data={roiByCategory}
-                height={350}
-              />
-              <Card>
-                <CardHeader>
-                  <CardTitle>Análise Financeira</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <div className="font-semibold text-green-800">Receita Total</div>
-                      <div className="text-2xl font-bold text-green-600">R$ 2.847.320</div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {roiInsights.map((insight, index) => (
+                <Card key={index}>
+                  <CardHeader>
+                    <CardTitle>ROI para {insight.stakeholder}</CardTitle>
+                    <CardDescription>Retorno sobre investimento</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-center space-y-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Multiplicador ROI</p>
+                        <div className="text-4xl font-bold text-green-600">{insight.roi}x</div>
+                        <p className="text-sm text-green-600">{insight.trend} vs último evento</p>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 pt-4">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Investimento</p>
+                          <p className="text-lg font-semibold">{insight.investimento}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Retorno</p>
+                          <p className="text-lg font-semibold text-green-600">{insight.retorno}</p>
+                        </div>
+                      </div>
                     </div>
-                    <ArrowUpRight className="h-8 w-8 text-green-600" />
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                    <div>
-                      <div className="font-semibold text-blue-800">Custo Total</div>
-                      <div className="text-2xl font-bold text-blue-600">R$ 1.245.680</div>
-                    </div>
-                    <ArrowDownRight className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                    <div>
-                      <div className="font-semibold text-purple-800">Lucro Líquido</div>
-                      <div className="text-2xl font-bold text-purple-600">R$ 1.601.640</div>
-                    </div>
-                    <TrendingUp className="h-8 w-8 text-purple-600" />
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="predictive" className="space-y-6">
-            <Card>
-              <CardHeader>
+          <TabsContent value="predictions" className="space-y-6">
+            <Card className="border-blue-200">
+              <CardHeader className="bg-blue-50">
                 <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5" />
-                  Análise Preditiva - Próximos 30 Dias
+                  <BarChart3 className="h-5 w-5 text-blue-600" />
+                  Insights e Previsões com IA
                 </CardTitle>
                 <CardDescription>
-                  Projeções baseadas em machine learning e dados históricos
+                  Análises preditivas baseadas em machine learning e histórico de eventos
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {predictiveMetrics.map((metric, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">{metric.metric}</div>
-                      <div className="flex items-center justify-between">
-                        <div className="text-2xl font-bold">{metric.value}</div>
-                        <Badge variant="outline" className="text-green-600">
-                          {metric.change}
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <h3 className="font-semibold text-green-800 mb-2">🚀 Oportunidade de Crescimento</h3>
+                    <p className="text-sm text-green-700 mb-3">
+                      Dados indicam potencial para aumentar em 23% o número de visitantes 
+                      se realizados eventos no setor de tecnologia nos meses de março e setembro.
+                    </p>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600 font-medium">Confiança da IA:</span>
+                      <span className="font-bold">89%</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <h3 className="font-semibold text-blue-800 mb-2">📊 Previsão de ROI</h3>
+                    <p className="text-sm text-blue-700 mb-3">
+                      Projeção de ROI para o próximo Tech Summit é 4.2x, um aumento 
+                      de 15% em relação ao anterior, baseado em tendências de mercado.
+                    </p>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-blue-600 font-medium">Confiança da IA:</span>
+                      <span className="font-bold">92%</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                    <h3 className="font-semibold text-amber-800 mb-2">⚠️ Alerta de Atenção</h3>
+                    <p className="text-sm text-amber-700 mb-3">
+                      A satisfação com catering diminuiu 12% nos últimos 3 eventos. 
+                      Recomendamos rever fornecedores ou oferecer mais opções.
+                    </p>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-amber-600 font-medium">Confiança da IA:</span>
+                      <span className="font-bold">95%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-lg mb-4">Previsão de Performance para Próximos Eventos</h3>
+                  <div className="space-y-4">
+                    {[
+                      { 
+                        name: 'Tech Summit 2024', 
+                        date: 'Mar/2024',
+                        visitors: '5300-5800',
+                        revenue: 'R$ 1.8-2.1M',
+                        roi: '4.2-4.5x',
+                        confidence: 92
+                      },
+                      { 
+                        name: 'Expo Inovação 2024', 
+                        date: 'Jun/2024',
+                        visitors: '3800-4200',
+                        revenue: 'R$ 1.2-1.4M',
+                        roi: '3.8-4.1x',
+                        confidence: 88
+                      },
+                      { 
+                        name: 'DevCon 2024', 
+                        date: 'Set/2024',
+                        visitors: '3500-3900',
+                        revenue: 'R$ 980K-1.1M',
+                        roi: '3.5-3.8x',
+                        confidence: 85
+                      }
+                    ].map((event, index) => (
+                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div>
+                          <h4 className="font-semibold">{event.name}</h4>
+                          <p className="text-sm text-muted-foreground">{event.date}</p>
+                        </div>
+                        <div className="grid grid-cols-3 gap-8 text-center">
+                          <div>
+                            <p className="text-xs text-muted-foreground">Visitantes</p>
+                            <p className="font-medium">{event.visitors}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Receita</p>
+                            <p className="font-medium">{event.revenue}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">ROI</p>
+                            <p className="font-medium text-green-600">{event.roi}</p>
+                          </div>
+                        </div>
+                        <Badge variant="outline">
+                          IA: {event.confidence}%
                         </Badge>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Cenários de ROI</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-3 bg-green-50 rounded-lg">
-                    <div className="font-semibold text-green-800">Cenário Otimista</div>
-                    <div className="text-lg font-bold text-green-600">ROI: 425% (+31%)</div>
-                    <div className="text-sm text-green-700">Probabilidade: 25%</div>
-                  </div>
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <div className="font-semibold text-blue-800">Cenário Realista</div>
-                    <div className="text-lg font-bold text-blue-600">ROI: 324% (+0%)</div>
-                    <div className="text-sm text-blue-700">Probabilidade: 60%</div>
-                  </div>
-                  <div className="p-3 bg-orange-50 rounded-lg">
-                    <div className="font-semibold text-orange-800">Cenário Pessimista</div>
-                    <div className="text-lg font-bold text-orange-600">ROI: 245% (-24%)</div>
-                    <div className="text-sm text-orange-700">Probabilidade: 15%</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recomendações IA</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="p-3 bg-purple-50 rounded-lg">
-                    <div className="font-semibold text-purple-800 mb-1">🎯 Foco em Networking</div>
-                    <div className="text-sm text-purple-700">Aumentar atividades de networking pode elevar ROI em 15%</div>
-                  </div>
-                  <div className="p-3 bg-indigo-50 rounded-lg">
-                    <div className="font-semibold text-indigo-800 mb-1">📱 Engajamento Digital</div>
-                    <div className="text-sm text-indigo-700">Implementar gamificação pode aumentar participação em 23%</div>
-                  </div>
-                  <div className="p-3 bg-teal-50 rounded-lg">
-                    <div className="font-semibold text-teal-800 mb-1">🎪 Otimização de Stands</div>
-                    <div className="text-sm text-teal-700">Redistribuir layout pode melhorar fluxo em 18%</div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </TabsContent>
         </Tabs>
       </div>

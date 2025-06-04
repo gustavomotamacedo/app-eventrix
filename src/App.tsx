@@ -41,6 +41,12 @@ import Reports from "./pages/Reports";
 import AnalyticsNPS from "./pages/AnalyticsNPS";
 import AnalyticsHeatmap from "./pages/AnalyticsHeatmap";
 import AnalyticsEngagement from "./pages/AnalyticsEngagement";
+import Marketplace from "./pages/Marketplace";
+import APIManagement from "./pages/APIManagement";
+import AIValidator from "./pages/AIValidator";
+import HeatmapAI from "./pages/HeatmapAI";
+import DynamicPricing from "./pages/DynamicPricing";
+import LegalAI from "./pages/LegalAI";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +84,17 @@ const App = () => (
           <Route path="/communication/humangpt" element={<CommunicationHumanGPT />} />
           <Route path="/communication/linkai" element={<CommunicationLinkAI />} />
           <Route path="/communication/notifications" element={<CommunicationNotifications />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/analytics/nps" element={<AnalyticsNPS />} />
+          <Route path="/analytics/heatmap" element={<AnalyticsHeatmap />} />
+          <Route path="/analytics/engagement" element={<AnalyticsEngagement />} />
+          <Route path="/integrations" element={<Marketplace />} />
+          <Route path="/api-management" element={<APIManagement />} />
+          <Route path="/ai-validator" element={<AIValidator />} />
+          <Route path="/heatmap" element={<HeatmapAI />} />
+          <Route path="/dynamic-pricing" element={<DynamicPricing />} />
+          <Route path="/legal-ai" element={<LegalAI />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
