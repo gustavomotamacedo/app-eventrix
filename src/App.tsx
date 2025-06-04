@@ -15,6 +15,11 @@ import Exhibitors from "./pages/Exhibitors";
 import Visitors from "./pages/Visitors";
 import Staff from "./pages/Staff";
 import Suppliers from "./pages/Suppliers";
+import Permissions from "./pages/Permissions";
+import Lectures from "./pages/Lectures";
+import Tracks from "./pages/Tracks";
+import Activities from "./pages/Activities";
+import Venues from "./pages/Venues";
 import Registration from "./pages/Registration";
 import Marketing from "./pages/Marketing";
 import LiveOps from "./pages/LiveOps";
@@ -39,6 +44,11 @@ const App = () => (
           <Route path="/visitors" element={<Visitors />} />
           <Route path="/staff" element={<Staff />} />
           <Route path="/suppliers" element={<Suppliers />} />
+          <Route path="/permissions" element={<Permissions />} />
+          <Route path="/lectures" element={<Lectures />} />
+          <Route path="/tracks" element={<Tracks />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/venues" element={<Venues />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/marketing" element={<Marketing />} />
           <Route path="/live-operations" element={<LiveOps />} />
