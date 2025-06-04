@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { FileText, Download, Mail, Calendar, Filter, Search, TrendingUp, BarChart3, PieChart, Users, DollarSign } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { DatePicker } from '@/components/ui/calendar';
 
 const Reports = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
