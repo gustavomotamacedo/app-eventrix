@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -29,6 +28,13 @@ import Marketing from "./pages/Marketing";
 import LiveOps from "./pages/LiveOps";
 import Finance from "./pages/Finance";
 import Settings from "./pages/Settings";
+import MarketingAds from "./pages/MarketingAds";
+import MarketingContent from "./pages/MarketingContent";
+import MarketingEmail from "./pages/MarketingEmail";
+import MarketingPages from "./pages/MarketingPages";
+import CommunicationHumanGPT from "./pages/CommunicationHumanGPT";
+import CommunicationLinkAI from "./pages/CommunicationLinkAI";
+import CommunicationNotifications from "./pages/CommunicationNotifications";
 
 const queryClient = new QueryClient();
 
@@ -59,9 +65,13 @@ const App = () => (
           <Route path="/checkin" element={<CheckIn />} />
           <Route path="/access-history" element={<AccessHistory />} />
           <Route path="/marketing" element={<Marketing />} />
-          <Route path="/live-operations" element={<LiveOps />} />
-          <Route path="/finance" element={<Finance />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/marketing/ads" element={<MarketingAds />} />
+          <Route path="/marketing/content" element={<MarketingContent />} />
+          <Route path="/marketing/email" element={<MarketingEmail />} />
+          <Route path="/marketing/pages" element={<MarketingPages />} />
+          <Route path="/communication/humangpt" element={<CommunicationHumanGPT />} />
+          <Route path="/communication/linkai" element={<CommunicationLinkAI />} />
+          <Route path="/communication/notifications" element={<CommunicationNotifications />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

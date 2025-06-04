@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -29,7 +30,13 @@ import {
   ChevronRight,
   Eye,
   Scan,
-  History
+  History,
+  Megaphone,
+  FileText,
+  Globe,
+  Bot,
+  Link,
+  Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -95,6 +102,7 @@ const Sidebar = () => {
     agenda: false,
     tarefas: false,
     credenciamento: false,
+    marketing: false,
     comunicacao: false,
     analytics: false,
     integracao: false,
@@ -144,10 +152,17 @@ const Sidebar = () => {
     { icon: <History size={16} />, label: 'Histórico de Acessos', to: '/access-history' },
   ];
 
+  const marketingGroup = [
+    { icon: <Megaphone size={16} />, label: 'Ads', to: '/marketing/ads' },
+    { icon: <FileText size={16} />, label: 'Conteúdo', to: '/marketing/content' },
+    { icon: <Mail size={16} />, label: 'E-mail', to: '/marketing/email' },
+    { icon: <Globe size={16} />, label: 'Pages', to: '/marketing/pages' },
+  ];
+
   const comunicacaoGroup = [
-    { icon: <Bell size={16} />, label: 'Notificações', to: '/notifications' },
-    { icon: <Mail size={16} />, label: 'Email/WhatsApp', to: '/marketing' },
-    { icon: <MessageSquare size={16} />, label: 'Central de Mensagens', to: '/messages' },
+    { icon: <Bot size={16} />, label: 'HumanGPT', to: '/communication/humangpt' },
+    { icon: <Link size={16} />, label: 'LinkAI', to: '/communication/linkai' },
+    { icon: <Bell size={16} />, label: 'Notificações', to: '/communication/notifications' },
   ];
 
   const analyticsGroup = [
@@ -291,6 +306,26 @@ const Sidebar = () => {
             onToggle={() => toggleGroup('credenciamento')}
           >
             {credenciamentoGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
+
+          {/* Marketing Group */}
+          <SidebarGroup
+            icon={<Megaphone size={16} />}
+            label="Marketing"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.marketing}
+            onToggle={() => toggleGroup('marketing')}
+          >
+            {marketingGroup.map((item) => (
               <SidebarItem
                 key={item.to}
                 icon={item.icon}
