@@ -49,7 +49,11 @@ const App = () => (
           <Route path="/tracks" element={<Tracks />} />
           <Route path="/activities" element={<Activities />} />
           <Route path="/venues" element={<Venues />} />
+          <Route path="/checklist" element={<Checklist />} />
+          <Route path="/team-tasks" element={<TeamTasks />} />
           <Route path="/registration" element={<Registration />} />
+          <Route path="/checkin" element={<CheckIn />} />
+          <Route path="/access-history" element={<AccessHistory />} />
           <Route path="/marketing" element={<Marketing />} />
           <Route path="/live-operations" element={<LiveOps />} />
           <Route path="/finance" element={<Finance />} />
