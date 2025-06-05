@@ -29,60 +29,31 @@ const Sidebar = () => {
         onToggle={() => setIsCollapsed(!isCollapsed)} 
       />
 
-      {/* Conteúdo de Navegação - sem scroll */}
-      <div className="flex-1 px-4 py-4 space-y-2 min-h-0">
-        {/* Dashboard - sempre visível */}
-        <div className="space-y-1">
-          <SidebarItem
-            icon={dashboardItem.icon}
-            label={dashboardItem.label}
-            to={dashboardItem.to}
-            isCollapsed={isCollapsed}
-            isActive={location.pathname === dashboardItem.to}
-          />
-        </div>
-
-        {/* Eventos - sempre visível */}
-        <div className="space-y-1">
-          <SidebarGroup
-            icon={<Calendar size={16} />}
-            label="Eventos"
-            isCollapsed={isCollapsed}
-            isOpen={activeGroup === 'events'}
-            onToggle={() => toggleGroup('events')}
-            priority="high"
-          >
-            {eventsItems.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-                badge={item.badge}
-                isHighlighted={item.highlighted}
-              />
-            ))}
-          </SidebarGroup>
-        </div>
-
-        {/* Separador Visual */}
-        {!isCollapsed && <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />}
-
-        {/* Grupos Organizados - Sistema de Acordeão Inteligente */}
-        <div className="space-y-1">
-          {menuGroups.map((group) => (
-            <SidebarGroup
-              key={group.id}
-              icon={group.icon}
-              label={group.label}
+      {/* Conteúdo de Navegação - flex-1 com overflow-y-auto apenas aqui */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-4 py-4 space-y-2">
+          {/* Dashboard - sempre visível */}
+          <div className="space-y-1">
+            <SidebarItem
+              icon={dashboardItem.icon}
+              label={dashboardItem.label}
+              to={dashboardItem.to}
               isCollapsed={isCollapsed}
-              isOpen={activeGroup === group.id}
-              onToggle={() => toggleGroup(group.id)}
-              priority={group.priority}
+              isActive={location.pathname === dashboardItem.to}
+            />
+          </div>
+
+          {/* Eventos - sempre visível */}
+          <div className="space-y-1">
+            <SidebarGroup
+              icon={<Calendar size={16} />}
+              label="Eventos"
+              isCollapsed={isCollapsed}
+              isOpen={activeGroup === 'events'}
+              onToggle={() => toggleGroup('events')}
+              priority="high"
             >
-              {group.items.map((item) => (
+              {eventsItems.map((item) => (
                 <SidebarItem
                   key={item.to}
                   icon={item.icon}
@@ -90,14 +61,45 @@ const Sidebar = () => {
                   to={item.to}
                   isCollapsed={isCollapsed}
                   isActive={location.pathname === item.to}
+                  badge={item.badge}
+                  isHighlighted={item.highlighted}
                 />
               ))}
             </SidebarGroup>
-          ))}
+          </div>
+
+          {/* Separador Visual */}
+          {!isCollapsed && <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />}
+
+          {/* Grupos Organizados */}
+          <div className="space-y-1">
+            {menuGroups.map((group) => (
+              <SidebarGroup
+                key={group.id}
+                icon={group.icon}
+                label={group.label}
+                isCollapsed={isCollapsed}
+                isOpen={activeGroup === group.id}
+                onToggle={() => toggleGroup(group.id)}
+                priority={group.priority}
+              >
+                {group.items.map((item) => (
+                  <SidebarItem
+                    key={item.to}
+                    icon={item.icon}
+                    label={item.label}
+                    to={item.to}
+                    isCollapsed={isCollapsed}
+                    isActive={location.pathname === item.to}
+                  />
+                ))}
+              </SidebarGroup>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Footer Fixo no Final */}
+      {/* Footer Fixo no Final - SEMPRE VISÍVEL */}
       <SidebarFooter isCollapsed={isCollapsed} />
     </div>
   );
