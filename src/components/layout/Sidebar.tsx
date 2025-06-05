@@ -131,6 +131,9 @@ const Sidebar = () => {
     core: true,
     users: false,
     content: false,
+    communication: false,
+    marketing: false,
+    analytics: false,
     tools: false,
     system: false
   });
@@ -143,34 +146,73 @@ const Sidebar = () => {
     }));
   };
 
-  // Agrupamento inteligente por funcionalidade
+  // Navegação principal (sempre visível)
   const coreNavigation = [
     { icon: <Home size={16} />, label: 'Dashboard', to: '/dashboard' },
     { icon: <Calendar size={16} />, label: 'Eventos', to: '/events', badge: 'Nova' },
     { icon: <BarChart3 size={16} />, label: 'Analytics', to: '/analytics' },
   ];
 
+  // Grupo de usuários
   const usersGroup = [
     { icon: <Users size={16} />, label: 'Expositores', to: '/exhibitors' },
     { icon: <UserCheck size={16} />, label: 'Visitantes', to: '/visitors' },
     { icon: <UserPlus size={16} />, label: 'Staff', to: '/staff' },
+    { icon: <Users size={16} />, label: 'Fornecedores', to: '/suppliers' },
     { icon: <Shield size={16} />, label: 'Permissões', to: '/permissions' },
   ];
 
+  // Grupo de conteúdo
   const contentGroup = [
     { icon: <Calendar size={16} />, label: 'Palestras', to: '/lectures' },
     { icon: <Activity size={16} />, label: 'Trilhas', to: '/tracks' },
+    { icon: <Activity size={16} />, label: 'Atividades', to: '/activities' },
     { icon: <MapPin size={16} />, label: 'Locais', to: '/venues' },
-    { icon: <CheckSquare size={16} />, label: 'Tarefas', to: '/checklist' },
+    { icon: <CheckSquare size={16} />, label: 'Checklist', to: '/checklist' },
+    { icon: <CheckSquare size={16} />, label: 'Tarefas por Equipe', to: '/team-tasks' },
   ];
 
+  // Grupo de comunicação
+  const communicationGroup = [
+    { icon: <Bot size={16} />, label: 'HumanGPT', to: '/communication/humangpt' },
+    { icon: <LinkIcon size={16} />, label: 'LinkAI', to: '/communication/linkai' },
+    { icon: <Bell size={16} />, label: 'Notificações', to: '/communication/notifications' },
+  ];
+
+  // Grupo de marketing
+  const marketingGroup = [
+    { icon: <Megaphone size={16} />, label: 'Marketing', to: '/marketing' },
+    { icon: <Megaphone size={16} />, label: 'Anúncios', to: '/marketing/ads' },
+    { icon: <FileText size={16} />, label: 'Conteúdo', to: '/marketing/content' },
+    { icon: <Mail size={16} />, label: 'Email', to: '/marketing/email' },
+    { icon: <Globe size={16} />, label: 'Landing Pages', to: '/marketing/pages' },
+  ];
+
+  // Grupo de analytics
+  const analyticsGroup = [
+    { icon: <BarChart3 size={16} />, label: 'Analytics', to: '/analytics' },
+    { icon: <FileText size={16} />, label: 'Relatórios', to: '/reports' },
+    { icon: <Star size={16} />, label: 'NPS', to: '/analytics/nps' },
+    { icon: <Eye size={16} />, label: 'Heatmap', to: '/analytics/heatmap' },
+    { icon: <TrendingUp size={16} />, label: 'Engajamento', to: '/analytics/engagement' },
+  ];
+
+  // Grupo de ferramentas
   const toolsGroup = [
     { icon: <QrCode size={16} />, label: 'Credenciamento', to: '/registration' },
-    { icon: <Megaphone size={16} />, label: 'Marketing', to: '/marketing/ads' },
-    { icon: <Bot size={16} />, label: 'IA Tools', to: '/communication/humangpt' },
-    { icon: <Puzzle size={16} />, label: 'Integrações', to: '/integrations' },
+    { icon: <Scan size={16} />, label: 'Check-in', to: '/checkin' },
+    { icon: <History size={16} />, label: 'Histórico de Acessos', to: '/access-history' },
+    { icon: <Activity size={16} />, label: 'Live Ops', to: '/live-ops' },
+    { icon: <DollarSign size={16} />, label: 'Financeiro', to: '/finance' },
+    { icon: <Puzzle size={16} />, label: 'Marketplace', to: '/integrations' },
+    { icon: <Globe size={16} />, label: 'API Management', to: '/api-management' },
+    { icon: <Bot size={16} />, label: 'AI Validator', to: '/ai-validator' },
+    { icon: <Eye size={16} />, label: 'Heatmap AI', to: '/heatmap' },
+    { icon: <DollarSign size={16} />, label: 'Dynamic Pricing', to: '/dynamic-pricing' },
+    { icon: <Shield size={16} />, label: 'Legal AI', to: '/legal-ai' },
   ];
 
+  // Grupo de sistema
   const systemGroup = [
     { icon: <Settings size={16} />, label: 'Configurações', to: '/settings' },
     { icon: <HelpCircle size={16} />, label: 'Suporte', to: '/help' },
@@ -202,8 +244,8 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Conteúdo de Navegação */}
-      <div className="flex-1 px-4 py-6 space-y-6 overflow-hidden">
+      {/* Conteúdo de Navegação com altura fixa e scroll apenas no conteúdo */}
+      <div className="flex-1 px-4 py-6 space-y-4 overflow-y-auto">
         {/* Navegação Principal */}
         <div className="space-y-1">
           {coreNavigation.map((item) => (
@@ -223,7 +265,7 @@ const Sidebar = () => {
         {!isCollapsed && <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />}
 
         {/* Grupos Organizados */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <SidebarGroup
             icon={<Users size={16} />}
             label="Usuários"
@@ -252,6 +294,63 @@ const Sidebar = () => {
             onToggle={() => toggleGroup('content')}
           >
             {contentGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
+
+          <SidebarGroup
+            icon={<MessageSquare size={16} />}
+            label="Comunicação"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.communication}
+            onToggle={() => toggleGroup('communication')}
+          >
+            {communicationGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
+
+          <SidebarGroup
+            icon={<Megaphone size={16} />}
+            label="Marketing"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.marketing}
+            onToggle={() => toggleGroup('marketing')}
+          >
+            {marketingGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
+
+          <SidebarGroup
+            icon={<BarChart3 size={16} />}
+            label="Analytics"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.analytics}
+            onToggle={() => toggleGroup('analytics')}
+          >
+            {analyticsGroup.map((item) => (
               <SidebarItem
                 key={item.to}
                 icon={item.icon}

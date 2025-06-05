@@ -1,266 +1,186 @@
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React from 'react';
+import { Shield, Plus, Users, Key, Settings, Filter, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Search, Users, Shield, Edit, Trash2, Settings } from 'lucide-react';
-import PermissionForm from './PermissionForm';
-import RoleForm from './RoleForm';
 
 const PermissionsList = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPermission, setSelectedPermission] = useState(null);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [isPermissionDialogOpen, setIsPermissionDialogOpen] = useState(false);
-  const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);
-
   const roles = [
     {
       id: 1,
-      name: 'Administrador',
-      description: 'Acesso completo ao sistema',
-      permissions: ['create_events', 'edit_events', 'delete_events', 'manage_users', 'view_reports'],
-      users_count: 3,
-      color: 'red'
+      name: 'Super Admin',
+      description: 'Acesso total ao sistema',
+      users: 2,
+      permissions: ['all'],
+      color: '#DC2626'
     },
     {
       id: 2,
-      name: 'Organizador',
-      description: 'Gerencia eventos e conteúdo',
-      permissions: ['create_events', 'edit_events', 'manage_content'],
-      users_count: 8,
-      color: 'blue'
+      name: 'Administrador',
+      description: 'Gestão de eventos e usuários',
+      users: 5,
+      permissions: ['events', 'users', 'analytics', 'settings'],
+      color: '#4D2BFB'
     },
     {
       id: 3,
-      name: 'Staff',
-      description: 'Operações básicas do evento',
-      permissions: ['view_events', 'check_in_users'],
-      users_count: 15,
-      color: 'green'
+      name: 'Gerente de Evento',
+      description: 'Gestão operacional de eventos',
+      users: 8,
+      permissions: ['events', 'checkin', 'activities', 'venues'],
+      color: '#03F9FF'
     },
     {
       id: 4,
-      name: 'Palestrante',
-      description: 'Acesso às suas palestras',
-      permissions: ['view_own_lectures', 'edit_own_lectures'],
-      users_count: 25,
-      color: 'purple'
+      name: 'Staff Operacional',
+      description: 'Operações básicas do evento',
+      users: 15,
+      permissions: ['checkin', 'activities'],
+      color: '#10B981'
     }
   ];
 
   const permissions = [
-    { id: 1, name: 'create_events', description: 'Criar novos eventos', module: 'Eventos' },
-    { id: 2, name: 'edit_events', description: 'Editar eventos existentes', module: 'Eventos' },
-    { id: 3, name: 'delete_events', description: 'Excluir eventos', module: 'Eventos' },
-    { id: 4, name: 'manage_users', description: 'Gerenciar usuários', module: 'Usuários' },
-    { id: 5, name: 'view_reports', description: 'Visualizar relatórios', module: 'Relatórios' },
-    { id: 6, name: 'manage_content', description: 'Gerenciar conteúdo', module: 'Conteúdo' },
-    { id: 7, name: 'check_in_users', description: 'Fazer check-in de usuários', module: 'Credenciamento' },
-    { id: 8, name: 'view_events', description: 'Visualizar eventos', module: 'Eventos' },
-    { id: 9, name: 'view_own_lectures', description: 'Ver próprias palestras', module: 'Palestras' },
-    { id: 10, name: 'edit_own_lectures', description: 'Editar próprias palestras', module: 'Palestras' }
+    { key: 'all', name: 'Acesso Total', description: 'Controle completo do sistema' },
+    { key: 'events', name: 'Eventos', description: 'Criar e gerenciar eventos' },
+    { key: 'users', name: 'Usuários', description: 'Gerenciar participantes e equipe' },
+    { key: 'analytics', name: 'Analytics', description: 'Visualizar relatórios e métricas' },
+    { key: 'checkin', name: 'Check-in', description: 'Realizar credenciamento' },
+    { key: 'activities', name: 'Atividades', description: 'Gerenciar atividades do evento' },
+    { key: 'venues', name: 'Locais', description: 'Configurar salas e espaços' },
+    { key: 'settings', name: 'Configurações', description: 'Ajustar configurações do sistema' }
   ];
 
-  const filteredRoles = roles.filter(role =>
-    role.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    role.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredPermissions = permissions.filter(permission =>
-    permission.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    permission.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    permission.module.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Permissões e Perfis</h1>
-          <p className="text-muted-foreground">
-            Gerencie perfis de usuário e suas permissões no sistema.
-          </p>
-        </div>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar perfis ou permissões..."
-            className="pl-8"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <Tabs defaultValue="roles" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="roles" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Perfis de Usuário
-          </TabsTrigger>
-          <TabsTrigger value="permissions" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            Permissões
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="roles" className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Perfis de Usuário</h2>
-            <Dialog open={isRoleDialogOpen} onOpenChange={setIsRoleDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Novo Perfil
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>{selectedRole ? 'Editar Perfil' : 'Novo Perfil'}</DialogTitle>
-                  <DialogDescription>
-                    {selectedRole ? 'Edite as informações do perfil.' : 'Crie um novo perfil de usuário com permissões específicas.'}
-                  </DialogDescription>
-                </DialogHeader>
-                <RoleForm
-                  role={selectedRole}
-                  permissions={permissions}
-                  onClose={() => {
-                    setIsRoleDialogOpen(false);
-                    setSelectedRole(null);
-                  }}
-                />
-              </DialogContent>
-            </Dialog>
+    <div className="space-y-6 tech-grid min-h-full p-6">
+      {/* Header */}
+      <div className="tech-card p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Permissões e Perfis</h1>
+            <p className="text-muted-foreground">Controle de acesso e níveis de permissão</p>
           </div>
+          <Button className="tech-button">
+            <Plus size={16} className="mr-2" />
+            Novo Perfil
+          </Button>
+        </div>
+      </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredRoles.map((role) => (
-              <Card key={role.id} className="relative">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline" className={`bg-${role.color}-50 text-${role.color}-700 border-${role.color}-200`}>
-                      {role.name}
-                    </Badge>
-                    <div className="flex items-center space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedRole(role);
-                          setIsRoleDialogOpen(true);
-                        }}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  <CardDescription className="text-sm">
-                    {role.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Usuários:</span>
-                      <span className="font-medium">{role.users_count}</span>
-                    </div>
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="tech-kpi-card">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Perfis Ativos</p>
+              <h3 className="text-2xl font-bold mt-1">4</h3>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/10 flex items-center justify-center">
+              <Shield size={20} className="text-primary" />
+            </div>
+          </div>
+        </div>
+        <div className="tech-kpi-card">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Total de Usuários</p>
+              <h3 className="text-2xl font-bold mt-1">30</h3>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center">
+              <Users size={20} className="text-green-600" />
+            </div>
+          </div>
+        </div>
+        <div className="tech-kpi-card">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Permissões</p>
+              <h3 className="text-2xl font-bold mt-1">8</h3>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
+              <Key size={20} className="text-blue-600" />
+            </div>
+          </div>
+        </div>
+        <div className="tech-kpi-card">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Admins</p>
+              <h3 className="text-2xl font-bold mt-1">7</h3>
+            </div>
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
+              <Settings size={20} className="text-purple-600" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Roles List */}
+      <div className="tech-card p-6">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-4">Perfis de Acesso</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {roles.map((role) => (
+              <div key={role.id} className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div 
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: role.color }}
+                    />
                     <div>
-                      <span className="text-sm text-muted-foreground">Permissões:</span>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {role.permissions.slice(0, 3).map((permission) => (
-                          <Badge key={permission} variant="secondary" className="text-xs">
-                            {permission.replace('_', ' ')}
-                          </Badge>
-                        ))}
-                        {role.permissions.length > 3 && (
-                          <Badge variant="secondary" className="text-xs">
-                            +{role.permissions.length - 3}
-                          </Badge>
-                        )}
-                      </div>
+                      <h3 className="font-semibold">{role.name}</h3>
+                      <p className="text-sm text-muted-foreground">{role.description}</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="permissions" className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Permissões do Sistema</h2>
-            <Dialog open={isPermissionDialogOpen} onOpenChange={setIsPermissionDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nova Permissão
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{selectedPermission ? 'Editar Permissão' : 'Nova Permissão'}</DialogTitle>
-                  <DialogDescription>
-                    {selectedPermission ? 'Edite as informações da permissão.' : 'Crie uma nova permissão para o sistema.'}
-                  </DialogDescription>
-                </DialogHeader>
-                <PermissionForm
-                  permission={selectedPermission}
-                  onClose={() => {
-                    setIsPermissionDialogOpen(false);
-                    setSelectedPermission(null);
-                  }}
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
-
-          <div className="grid gap-4">
-            {filteredPermissions.map((permission) => (
-              <Card key={permission.id}>
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-2 bg-blue-50 rounded-lg">
-                        <Settings className="h-5 w-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium">{permission.name}</h3>
-                        <p className="text-sm text-muted-foreground">{permission.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline">{permission.module}</Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedPermission(permission);
-                          setIsPermissionDialogOpen(true);
-                        }}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+                  <Button variant="outline" size="sm">
+                    Editar
+                  </Button>
+                </div>
+                
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="flex items-center gap-1 text-sm">
+                    <Users size={14} className="text-muted-foreground" />
+                    <span>{role.users} usuários</span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">Permissões:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {role.permissions.map((permission) => (
+                      <span key={permission} className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
+                        {permissions.find(p => p.key === permission)?.name || permission}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
+
+      {/* Permissions Matrix */}
+      <div className="tech-card p-6">
+        <h2 className="text-xl font-semibold mb-4">Matriz de Permissões</h2>
+        <div className="space-y-3">
+          {permissions.map((permission) => (
+            <div key={permission.key} className="border rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">{permission.name}</h3>
+                  <p className="text-sm text-muted-foreground">{permission.description}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Key size={16} className="text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">{permission.key}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
