@@ -10,17 +10,17 @@ interface PlansHeroProps {
 
 const PlansHero: React.FC<PlansHeroProps> = ({ billingCycle, setBillingCycle }) => {
   return (
-    <div className="legal-gradient-bg text-white py-24">
+    <div className="legal-gradient-bg text-white py-12">
       <div className="container mx-auto px-4 text-center">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight">EVENTRIX™</h1>
+        </div>
         <div className="flex items-center justify-center gap-2 mb-6">
-          <h1 className="text-6xl font-black tracking-tight">EVENTRIX™</h1>
+          <Zap size={18} className="text-secondary" />
+          <span className="text-lg font-semibold">Powered by LEGAL AI</span>
         </div>
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <Zap size={20} className="text-secondary" />
-          <span className="text-xl font-semibold">Powered by LEGAL AI</span>
-        </div>
-        <h2 className="text-5xl font-bold mb-6 tracking-tight">Escolha seu Plano</h2>
-        <p className="text-xl text-white/90 max-w-3xl mx-auto mb-12 leading-relaxed">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Escolha seu Plano</h2>
+        <p className="text-lg text-white/90 max-w-2xl mx-auto mb-8 leading-relaxed">
           Plataforma completa para gestão de eventos com IA integrada. 
           Transforme seus eventos com tecnologia de ponta.
         </p>
@@ -55,7 +55,7 @@ const PlansHero: React.FC<PlansHeroProps> = ({ billingCycle, setBillingCycle }) 
         </div>
         
         {billingCycle === 'annual' && (
-          <p className="text-secondary font-medium mt-4 animate-pulse">
+          <p className="text-secondary font-medium mt-3 animate-pulse">
             💰 Economize até 25% com o plano anual!
           </p>
         )}
