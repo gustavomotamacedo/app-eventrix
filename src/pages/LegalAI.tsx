@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Shield, FileText, Check, AlertTriangle, FileClock, Brain, Download, Filter, Eye, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -351,7 +352,7 @@ const LegalAI = () => {
                       <h3 className="font-semibold">Em Revisão</h3>
                       <p className="text-3xl font-bold mt-2">11</p>
                       <p className="text-sm text-muted-foreground">contratos</p>
-                    </Card>
+                    </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-4 text-center">
@@ -361,7 +362,7 @@ const LegalAI = () => {
                       <h3 className="font-semibold">Pendentes</h3>
                       <p className="text-3xl font-bold mt-2">3</p>
                       <p className="text-sm text-muted-foreground">contratos</p>
-                    </Card>
+                    </CardContent>
                   </Card>
                 </div>
               </CardContent>
