@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
@@ -26,75 +26,93 @@ interface PlanCardProps {
 }
 
 const PlanCard: React.FC<PlanCardProps> = ({ plan, billingCycle, formatPrice }) => {
+  const currentPrice = billingCycle === 'annual' ? plan.price.annual : plan.price.monthly;
+  const monthlyEquivalent = billingCycle === 'annual' ? plan.price.annual / 12 : plan.price.monthly;
+
   return (
-    <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-xl ${
-      plan.popular ? 'border-primary shadow-lg scale-105' : 'tech-card'
+    <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${
+      plan.popular 
+        ? 'border-2 border-primary shadow-2xl scale-105 bg-gradient-to-b from-primary/5 to-secondary/5' 
+        : 'tech-card hover:border-primary/30'
     }`}>
       {plan.popular && (
-        <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary to-secondary text-white text-center py-2 text-sm font-bold">
-          <Star size={16} className="inline mr-1" />
+        <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary via-secondary to-primary text-white text-center py-3 text-sm font-bold">
+          <Star size={16} className="inline mr-2" />
           MAIS POPULAR
+          <Crown size={16} className="inline ml-2" />
         </div>
       )}
       
-      <CardHeader className={`text-center ${plan.popular ? 'pt-12' : 'pt-6'}`}>
-        <h3 className="text-2xl font-bold">{plan.name}</h3>
-        <p className="text-muted-foreground">{plan.description}</p>
+      <CardHeader className={`text-center ${plan.popular ? 'pt-16' : 'pt-8'} pb-4`}>
+        <h3 className="text-3xl font-bold text-foreground">{plan.name}</h3>
+        <p className="text-muted-foreground text-lg">{plan.description}</p>
         
-        <div className="py-4">
+        <div className="py-6">
           {plan.name === 'Enterprise' ? (
-            <div className="text-3xl font-bold">Sob consulta</div>
+            <div className="text-4xl font-bold text-primary">Sob consulta</div>
           ) : (
-            <>
-              <div className="text-4xl font-bold">
-                {formatPrice(billingCycle === 'annual' ? plan.price.annual : plan.price.monthly)}
+            <div className="space-y-2">
+              <div className="text-5xl font-bold text-primary">
+                {formatPrice(currentPrice)}
               </div>
-              <div className="text-sm text-muted-foreground">
-                /{billingCycle === 'annual' ? 'ano' : 'mês'}
+              <div className="text-lg text-muted-foreground font-medium">
+                por {billingCycle === 'annual' ? 'ano' : 'mês'}
               </div>
-            </>
+              {billingCycle === 'annual' && (
+                <div className="text-sm text-secondary font-medium">
+                  {formatPrice(monthlyEquivalent)}/mês
+                </div>
+              )}
+            </div>
           )}
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        {/* Features */}
-        <div className="space-y-3 mb-6">
-          <div className="flex justify-between">
-            <span className="text-sm">Eventos/ano:</span>
-            <span className="font-medium">{plan.features.events}</span>
+      <CardContent className="space-y-6 px-6 pb-8">
+        {/* Features Grid */}
+        <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <span className="text-muted-foreground">Eventos:</span>
+              <div className="font-semibold">{plan.features.events}</div>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Admins:</span>
+              <div className="font-semibold">{plan.features.admins}</div>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Visitantes:</span>
+              <div className="font-semibold">{plan.features.visitors}</div>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Expositores:</span>
+              <div className="font-semibold">{plan.features.exhibitors}</div>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span className="text-sm">Visitantes:</span>
-            <span className="font-medium">{plan.features.visitors}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm">Expositores:</span>
-            <span className="font-medium">{plan.features.exhibitors}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm">Admins:</span>
-            <span className="font-medium">{plan.features.admins}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm">Suporte:</span>
-            <span className="font-medium text-xs">{plan.features.support}</span>
+          <div className="pt-2 border-t border-border">
+            <span className="text-muted-foreground text-sm">Suporte:</span>
+            <div className="font-semibold text-sm">{plan.features.support}</div>
           </div>
         </div>
 
         {/* Highlights */}
-        <div className="space-y-2 mb-6">
+        <div className="space-y-3">
           {plan.highlights.map((highlight, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <Check size={16} className="text-primary shrink-0" />
-              <span className="text-sm">{highlight}</span>
+            <div key={index} className="flex items-start gap-3">
+              <Check size={18} className="text-primary shrink-0 mt-0.5" />
+              <span className="text-sm leading-relaxed">{highlight}</span>
             </div>
           ))}
         </div>
 
         <Button 
-          className={`w-full ${plan.popular ? 'tech-button' : ''}`}
+          className={`w-full h-12 text-base font-semibold ${
+            plan.popular 
+              ? 'tech-button text-white' 
+              : 'border-2 hover:border-primary hover:bg-primary hover:text-white'
+          }`}
           variant={plan.popular ? 'default' : 'outline'}
+          size="lg"
         >
           {plan.name === 'Enterprise' ? 'Falar com Vendas' : 'Começar Agora'}
         </Button>

@@ -22,9 +22,9 @@ const Plans = () => {
     <div className="min-h-screen bg-background">
       <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
-      <div className="container mx-auto px-4 -mt-10 relative z-10">
+      <div className="container mx-auto px-4 -mt-16 relative z-10">
         {/* Main Plans */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
           {mainPlans.map((plan) => (
             <PlanCard 
               key={plan.name} 
@@ -36,25 +36,25 @@ const Plans = () => {
         </div>
 
         {/* Add-ons Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold mb-4">Módulos e Serviços Plugáveis</h3>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+        <div className="mb-20">
+          <div className="text-center mb-16">
+            <h3 className="text-4xl font-bold mb-6">Módulos e Serviços Plugáveis</h3>
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               Expanda ainda mais as capacidades da plataforma com módulos especializados de IA e automação
             </p>
-            <div className="tech-badge tech-glow mt-4">
-              <Sparkles size={12} />
+            <div className="tech-badge tech-glow mt-6 text-base">
+              <Sparkles size={16} />
               <span>Contratação à parte - Compatível com todos os planos</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {addOnModules.map((module, index) => (
               <AddOnCard 
                 key={index} 
                 module={{
                   ...module,
-                  icon: <module.icon className="text-primary" size={20} />
+                  icon: <module.icon className="text-primary" size={24} />
                 }} 
               />
             ))}
