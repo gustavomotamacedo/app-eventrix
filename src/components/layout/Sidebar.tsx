@@ -20,7 +20,7 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "flex flex-col bg-white border-r border-slate-200/60 transition-all duration-300 h-screen shadow-sm relative",
+      "flex flex-col bg-white border-r border-slate-200/60 transition-all duration-300 h-screen shadow-sm shrink-0",
       isCollapsed ? "w-20" : "w-80"
     )}>
       {/* Header Fixo */}
@@ -30,8 +30,8 @@ const Sidebar = () => {
       />
 
       {/* Conteúdo de Navegação - Scrollable */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-20">
-        <div className="px-3 py-2 space-y-1">
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="px-3 py-2 space-y-1 pb-20">
           {/* Dashboard - sempre visível */}
           <div className="space-y-1">
             <SidebarItem
@@ -99,10 +99,8 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Footer Fixo no Final - SEMPRE VISÍVEL */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <SidebarFooter isCollapsed={isCollapsed} />
-      </div>
+      {/* Footer Fixo no Final */}
+      <SidebarFooter isCollapsed={isCollapsed} />
     </div>
   );
 };
