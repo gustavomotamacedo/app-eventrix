@@ -16,10 +16,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* LEGAL Brand Colors */
+    /* LEGAL Tech Colors - Minimalist Approach */
     --primary: 254 79% 58%; /* #4D2BFB */
-    --primary-light: 254 79% 78%; /* Lighter version */
-    --primary-dark: 254 79% 38%; /* Darker version */
+    --primary-light: 254 79% 95%; /* Very light version */
+    --primary-dark: 254 79% 35%; /* Darker version */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 181 100% 50%; /* #03F9FF */
@@ -28,56 +28,56 @@
     --tertiary: 239 90% 37%; /* #020CBC */
     --tertiary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215.4 16.3% 56.9%;
 
-    --accent: 254 79% 96%;
+    --accent: 254 79% 98%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 214.3 31.8% 94%;
+    --input: 214.3 31.8% 94%;
     --ring: 254 79% 58%;
 
-    --radius: 1rem; /* Rounded cards */
+    --radius: 0.75rem; /* More subtle radius */
 
-    --sidebar-background: 254 79% 58%; /* Primary color for sidebar */
-    --sidebar-foreground: 0 0% 100%; /* White text */
-    --sidebar-primary: 254 79% 68%; /* Lighter shade */
-    --sidebar-primary-foreground: 0 0% 100%; /* White text */
-    --sidebar-accent: 254 79% 48%; /* Darker shade */
-    --sidebar-accent-foreground: 0 0% 100%; /* White text */
-    --sidebar-border: 254 79% 48%; /* Darker shade for borders */
-    --sidebar-ring: 254 79% 78%; /* Lighter shade for focus */
+    --sidebar-background: 254 79% 58%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 254 79% 68%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 254 79% 48%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 254 79% 48%;
+    --sidebar-ring: 254 79% 78%;
   }
 
   .dark {
-    --background: 222 47% 11%;
+    --background: 222 47% 8%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 11%;
+    --card: 222 47% 10%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 11%;
+    --popover: 222 47% 10%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 254 79% 58%; /* Keeping brand primary */
-    --primary-light: 254 79% 68%; /* Adjusted for dark mode */
-    --primary-dark: 254 79% 48%; /* Adjusted for dark mode */
+    --primary: 254 79% 58%;
+    --primary-light: 254 79% 25%;
+    --primary-dark: 254 79% 70%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 181 100% 50%; /* Keeping brand secondary */
+    --secondary: 181 100% 50%;
     --secondary-foreground: 222 47% 11%;
 
-    --tertiary: 239 90% 37%; /* Keeping brand tertiary */
+    --tertiary: 239 90% 55%;
     --tertiary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 217.2 32.6% 15%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 254 79% 20%;
+    --accent: 254 79% 15%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -87,13 +87,13 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 254 79% 68%;
 
-    --sidebar-background: 222 47% 11%; /* Dark background */
+    --sidebar-background: 222 47% 8%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 254 79% 58%; /* Brand primary */
+    --sidebar-primary: 254 79% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 254 79% 30%;
+    --sidebar-accent: 254 79% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 254 79% 30%;
+    --sidebar-border: 254 79% 25%;
     --sidebar-ring: 254 79% 58%;
   }
 }
@@ -105,112 +105,117 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Neue Haas Unica', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-weight: 400;
-    line-height: 1.6;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
-    font-weight: 700;
+    @apply font-semibold tracking-tight;
+    font-weight: 600;
   }
 
   h1 {
     @apply text-3xl md:text-4xl;
-    font-weight: 800;
+    font-weight: 700;
   }
 
   h2 {
     @apply text-2xl md:text-3xl;
-    font-weight: 700;
+    font-weight: 650;
   }
 
   h3 {
     @apply text-xl md:text-2xl;
-    font-weight: 700;
+    font-weight: 600;
   }
 }
 
 @layer components {
-  .legal-card {
-    @apply bg-card text-card-foreground rounded-2xl border shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02];
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
-    border: 1px solid rgba(77, 43, 251, 0.1);
+  .tech-card {
+    @apply bg-card/80 backdrop-blur-sm text-card-foreground rounded-xl border border-border/50 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
   }
 
-  .legal-gradient-bg {
-    background: linear-gradient(135deg, #4D2BFB 0%, #03F9FF 50%, #020CBC 100%);
+  .tech-gradient-subtle {
+    background: linear-gradient(135deg, rgba(77, 43, 251, 0.03) 0%, rgba(3, 249, 255, 0.02) 100%);
   }
 
-  .legal-gradient-button {
-    @apply relative overflow-hidden rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg;
-    background: linear-gradient(135deg, #4D2BFB 0%, #03F9FF 100%);
+  .tech-button {
+    @apply relative overflow-hidden rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-md;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--tertiary)) 100%);
     color: white;
   }
 
-  .legal-gradient-button:hover {
-    background: linear-gradient(135deg, #020CBC 0%, #4D2BFB 100%);
+  .tech-button:hover {
+    background: linear-gradient(135deg, hsl(var(--tertiary)) 0%, hsl(var(--primary)) 100%);
   }
 
-  .legal-sidebar-item {
-    @apply flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-white/20 hover:scale-105;
+  .tech-sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-white/10 hover:translate-x-1;
   }
 
-  .legal-sidebar-item.active {
-    @apply bg-white/30 text-white shadow-lg;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+  .tech-sidebar-item.active {
+    @apply bg-white/15 text-white shadow-sm border border-white/10;
   }
 
-  .legal-kpi-card {
-    @apply legal-card p-6 relative overflow-hidden;
+  .tech-kpi-card {
+    @apply tech-card p-6 relative overflow-hidden;
   }
 
-  .legal-kpi-card::before {
+  .tech-kpi-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #4D2BFB 0%, #03F9FF 50%, #020CBC 100%);
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
   }
 
-  .legal-powered-badge {
-    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium;
-    background: linear-gradient(135deg, #4D2BFB 0%, #03F9FF 100%);
-    color: white;
+  .tech-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20;
   }
 
-  .legal-input {
-    @apply border-2 border-gray-200 rounded-xl px-4 py-3 transition-all duration-300 focus:border-primary focus:ring-2 focus:ring-primary/20;
+  .tech-input {
+    @apply border border-border/60 rounded-lg px-3 py-2.5 transition-all duration-200 focus:border-primary/60 focus:ring-2 focus:ring-primary/10;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
   }
 
-  .legal-input:focus {
-    box-shadow: 0 0 0 3px rgba(77, 43, 251, 0.1);
+  .tech-input:focus {
+    background: rgba(255, 255, 255, 0.8);
   }
 
-  @keyframes legal-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-  }
-
-  @keyframes legal-float {
+  @keyframes float-subtle {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-3px); }
   }
 
-  .legal-animate-pulse {
-    animation: legal-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
   }
 
-  .legal-animate-float {
-    animation: legal-float 3s ease-in-out infinite;
+  .tech-float {
+    animation: float-subtle 4s ease-in-out infinite;
   }
 
-  .legal-tech-grid {
+  .tech-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .tech-grid {
     background-image: 
-      linear-gradient(rgba(77, 43, 251, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(77, 43, 251, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+      radial-gradient(circle at 1px 1px, rgba(77, 43, 251, 0.08) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  .tech-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
