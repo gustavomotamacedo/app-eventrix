@@ -9,7 +9,7 @@ interface SidebarFooterProps {
 
 const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
   return (
-    <div className="p-4 border-t border-slate-200/60 shrink-0 bg-gradient-to-r from-white to-slate-50">
+    <div className="p-4 border-t border-slate-200/60 shrink-0 bg-gradient-to-r from-white to-slate-50 mt-auto">
       <div className={cn(
         "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300",
         "text-red-600 hover:text-red-700 hover:bg-red-50 hover:shadow-sm",

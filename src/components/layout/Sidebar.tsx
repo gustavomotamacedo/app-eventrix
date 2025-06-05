@@ -29,8 +29,8 @@ const Sidebar = () => {
         onToggle={() => setIsCollapsed(!isCollapsed)} 
       />
 
-      {/* Conteúdo de Navegação - altura fixa calculada */}
-      <div className="flex-1 px-4 py-6 space-y-3" style={{ height: 'calc(100vh - 160px)' }}>
+      {/* Conteúdo de Navegação - altura flexível */}
+      <div className="flex-1 px-4 py-6 space-y-3 overflow-y-auto">
         {/* Dashboard - sempre visível */}
         <div className="space-y-1">
           <SidebarItem
@@ -97,7 +97,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Footer Fixo */}
+      {/* Footer Fixo no Final */}
       <SidebarFooter isCollapsed={isCollapsed} />
     </div>
   );
