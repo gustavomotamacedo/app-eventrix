@@ -59,12 +59,12 @@ interface SidebarGroupProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, isCollapsed, isActive }) => (
   <Link to={to} className={cn(
-    "legal-sidebar-item",
-    isActive && "active",
+    "legal-sidebar-item text-white/80 hover:text-white",
+    isActive && "active text-white",
     isCollapsed ? "justify-center px-3" : "px-4"
   )}>
     <div className="w-5 h-5">{icon}</div>
-    {!isCollapsed && <span className="font-semibold">{label}</span>}
+    {!isCollapsed && <span className="font-medium">{label}</span>}
   </Link>
 );
 
@@ -79,7 +79,7 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({ icon, label, children, isCo
 
   return (
     <Collapsible open={isOpen} onOpenChange={onToggle}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300">
         <div className="flex items-center gap-3">
           <div className="w-4 h-4">{icon}</div>
           <span>{label}</span>
@@ -191,9 +191,9 @@ const Sidebar = () => {
       "flex flex-col legal-gradient-bg text-white transition-all min-h-full shadow-2xl",
       isCollapsed ? "w-20" : "w-80"
     )}>
-      <div className="flex items-center h-20 px-6 sticky top-0 z-10 border-b border-white/10">
+      <div className="flex items-center h-20 px-6 sticky top-0 z-10 border-b border-white/10 relative">
         {!isCollapsed && (
-          <div className="flex-1">
+          <div className="flex-1 relative z-10">
             <h1 className="text-2xl font-black text-white mb-1">EVENTRIX™</h1>
             <div className="flex items-center gap-2">
               <Zap size={12} className="text-secondary" />
@@ -203,13 +203,13 @@ const Sidebar = () => {
         )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-3 rounded-xl hover:bg-white/20 transition-all duration-300 hover:scale-110"
+          className="p-3 rounded-xl hover:bg-white/20 transition-all duration-300 hover:scale-110 relative z-10"
         >
           {isCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
         </button>
       </div>
 
-      <div className="flex-1 pt-6 px-4 pb-20 overflow-y-auto">
+      <div className="flex-1 pt-6 px-4 pb-20 overflow-y-auto relative z-10">
         <nav className="space-y-3">
           {/* Main Navigation */}
           {mainNavigation.map((item) => (
@@ -225,7 +225,7 @@ const Sidebar = () => {
 
           <div className="h-6" />
 
-          {/* All navigation groups with enhanced styling */}
+          {/* All navigation groups */}
           <SidebarGroup
             icon={<Calendar size={16} />}
             label="Eventos"
@@ -437,13 +437,13 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="p-4 sticky bottom-0 border-t border-white/10">
+      <div className="p-4 sticky bottom-0 border-t border-white/10 relative z-10">
         <div className={cn(
-          "legal-sidebar-item mt-auto cursor-pointer hover:bg-red-500/20",
+          "legal-sidebar-item mt-auto cursor-pointer hover:bg-red-500/20 text-white/80 hover:text-white",
           isCollapsed ? "justify-center px-3" : "px-4"
         )}>
           <LogOut size={20} />
-          {!isCollapsed && <span className="font-semibold">Sair</span>}
+          {!isCollapsed && <span className="font-medium">Sair</span>}
         </div>
       </div>
     </div>
