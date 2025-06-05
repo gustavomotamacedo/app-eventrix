@@ -166,7 +166,7 @@ const AnalyticsHeatmap = () => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-red-500 rounded"></div>
-                <span className="text-sm">Crítica (>90%)</span>
+                <span className="text-sm">Crítica (&gt;90%)</span>
               </div>
             </div>
           </CardContent>
