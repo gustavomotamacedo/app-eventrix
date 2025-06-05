@@ -35,7 +35,8 @@ import {
   FileText,
   Globe,
   Bot,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Star
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
