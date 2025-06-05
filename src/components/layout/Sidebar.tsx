@@ -39,7 +39,7 @@ import {
   Star,
   Building,
   Briefcase,
-  PresentationChart,
+  Presentation,
   Clock,
   Headphones,
   BookOpen,
@@ -150,7 +150,7 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeGroup, setActiveGroup] = useState<string>('dashboard');
+  const [activeGroup, setActiveGroup] = useState<string>('');
   const location = useLocation();
 
   const toggleGroup = (group: string) => {
@@ -158,7 +158,7 @@ const Sidebar = () => {
   };
 
   // Dashboard - sempre visível
-  const dashboardItem = { icon: <Home size={16} />, label: 'Dashboard', to: '/dashboard' };
+  const dashboardItem = { icon: <Home size={16} />, label: 'Painel do Organizador', to: '/dashboard' };
 
   // Eventos - sempre visível com destaque para "Novo Evento"
   const eventsItems = [
@@ -166,7 +166,7 @@ const Sidebar = () => {
     { icon: <Plus size={16} />, label: 'Novo Evento', to: '/events/new', highlighted: true, badge: 'Novo' },
   ];
 
-  // Grupos organizados conforme especificação
+  // Grupos organizados conforme especificação original
   const menuGroups = [
     {
       id: 'users',
@@ -188,7 +188,7 @@ const Sidebar = () => {
       priority: 'high' as const,
       items: [
         { icon: <Activity size={16} />, label: 'Atividades', to: '/activities' },
-        { icon: <PresentationChart size={16} />, label: 'Palestras', to: '/lectures' },
+        { icon: <Presentation size={16} />, label: 'Palestras', to: '/lectures' },
         { icon: <MapPin size={16} />, label: 'Salas/Locais', to: '/venues' },
         { icon: <Target size={16} />, label: 'Trilhas', to: '/tracks' },
       ]
