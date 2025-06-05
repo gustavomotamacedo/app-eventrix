@@ -29,9 +29,9 @@ const Sidebar = () => {
         onToggle={() => setIsCollapsed(!isCollapsed)} 
       />
 
-      {/* Conteúdo de Navegação - flex-1 com overflow-y-auto apenas aqui */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-4 py-4 space-y-2">
+      {/* Conteúdo de Navegação - SEM SCROLL */}
+      <div className="flex-1 min-h-0">
+        <div className="px-3 py-2 space-y-1 h-full">
           {/* Dashboard - sempre visível */}
           <div className="space-y-1">
             <SidebarItem
