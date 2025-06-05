@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -34,8 +35,7 @@ import {
   FileText,
   Globe,
   Bot,
-  Link as LinkIcon,
-  Send
+  Link as LinkIcon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -46,6 +46,7 @@ interface SidebarItemProps {
   to: string;
   isCollapsed: boolean;
   isActive: boolean;
+  badge?: string;
 }
 
 interface SidebarGroupProps {
@@ -55,23 +56,45 @@ interface SidebarGroupProps {
   isCollapsed: boolean;
   isOpen: boolean;
   onToggle: () => void;
+  priority?: 'high' | 'medium' | 'low';
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, isCollapsed, isActive }) => (
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, isCollapsed, isActive, badge }) => (
   <Link to={to} className={cn(
-    "legal-sidebar-item text-white/80 hover:text-white",
-    isActive && "active text-white",
+    "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative",
+    "text-slate-600 hover:text-slate-900 hover:bg-white/80 hover:shadow-sm",
+    isActive && "bg-gradient-to-r from-primary/10 to-primary/5 text-primary border border-primary/20 shadow-sm",
     isCollapsed ? "justify-center px-3" : "px-4"
   )}>
-    <div className="w-5 h-5">{icon}</div>
-    {!isCollapsed && <span className="font-medium">{label}</span>}
+    <div className="w-4 h-4 flex-shrink-0">{icon}</div>
+    {!isCollapsed && (
+      <>
+        <span className="font-medium text-sm truncate">{label}</span>
+        {badge && (
+          <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-medium">
+            {badge}
+          </span>
+        )}
+      </>
+    )}
+    {isCollapsed && isActive && (
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+    )}
   </Link>
 );
 
-const SidebarGroup: React.FC<SidebarGroupProps> = ({ icon, label, children, isCollapsed, isOpen, onToggle }) => {
+const SidebarGroup: React.FC<SidebarGroupProps> = ({ 
+  icon, 
+  label, 
+  children, 
+  isCollapsed, 
+  isOpen, 
+  onToggle, 
+  priority = 'medium' 
+}) => {
   if (isCollapsed) {
     return (
-      <div className="space-y-2">
+      <div className="space-y-1">
         {children}
       </div>
     );
@@ -79,16 +102,23 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({ icon, label, children, isCo
 
   return (
     <Collapsible open={isOpen} onOpenChange={onToggle}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300">
+      <CollapsibleTrigger className={cn(
+        "flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300 group",
+        "text-slate-700 hover:text-slate-900 hover:bg-slate-50/80",
+        priority === 'high' && "bg-gradient-to-r from-primary/5 to-transparent"
+      )}>
         <div className="flex items-center gap-3">
-          <div className="w-4 h-4">{icon}</div>
-          <span>{label}</span>
+          <div className="w-4 h-4 text-slate-500 group-hover:text-slate-700">{icon}</div>
+          <span className="font-semibold text-sm">{label}</span>
         </div>
-        <div className="transition-transform duration-300">
-          {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        <div className={cn(
+          "transition-transform duration-300 text-slate-400",
+          isOpen && "rotate-180"
+        )}>
+          <ChevronDown size={14} />
         </div>
       </CollapsibleTrigger>
-      <CollapsibleContent className="space-y-1 ml-6 mt-2">
+      <CollapsibleContent className="space-y-1 ml-6 mt-2 border-l border-slate-200/60 pl-4">
         {children}
       </CollapsibleContent>
     </Collapsible>
@@ -98,16 +128,11 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({ icon, label, children, isCo
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    eventos: true,
-    usuarios: false,
-    agenda: false,
-    tarefas: false,
-    credenciamento: false,
-    marketing: false,
-    comunicacao: false,
-    analytics: false,
-    integracao: false,
-    automacao: false
+    core: true,
+    users: false,
+    content: false,
+    tools: false,
+    system: false
   });
   const location = useLocation();
 
@@ -118,104 +143,96 @@ const Sidebar = () => {
     }));
   };
 
-  const mainNavigation = [
-    { icon: <Home size={20} />, label: 'Dashboard', to: '/dashboard' },
+  // Agrupamento inteligente por funcionalidade
+  const coreNavigation = [
+    { icon: <Home size={16} />, label: 'Dashboard', to: '/dashboard' },
+    { icon: <Calendar size={16} />, label: 'Eventos', to: '/events', badge: 'Nova' },
+    { icon: <BarChart3 size={16} />, label: 'Analytics', to: '/analytics' },
   ];
 
-  const eventosGroup = [
-    { icon: <Calendar size={16} />, label: 'Lista de Eventos', to: '/events' },
-    { icon: <Plus size={16} />, label: 'Novo Evento', to: '/events/new', highlight: true },
-  ];
-
-  const usuariosGroup = [
+  const usersGroup = [
     { icon: <Users size={16} />, label: 'Expositores', to: '/exhibitors' },
     { icon: <UserCheck size={16} />, label: 'Visitantes', to: '/visitors' },
     { icon: <UserPlus size={16} />, label: 'Staff', to: '/staff' },
-    { icon: <Users size={16} />, label: 'Fornecedores', to: '/suppliers' },
-    { icon: <Shield size={16} />, label: 'Permissões e Perfis', to: '/permissions' },
+    { icon: <Shield size={16} />, label: 'Permissões', to: '/permissions' },
   ];
 
-  const agendaGroup = [
+  const contentGroup = [
     { icon: <Calendar size={16} />, label: 'Palestras', to: '/lectures' },
     { icon: <Activity size={16} />, label: 'Trilhas', to: '/tracks' },
-    { icon: <Calendar size={16} />, label: 'Atividades', to: '/activities' },
-    { icon: <MapPin size={16} />, label: 'Salas/Locais', to: '/venues' },
+    { icon: <MapPin size={16} />, label: 'Locais', to: '/venues' },
+    { icon: <CheckSquare size={16} />, label: 'Tarefas', to: '/checklist' },
   ];
 
-  const tarefasGroup = [
-    { icon: <CheckSquare size={16} />, label: 'Checklist Geral', to: '/checklist' },
-    { icon: <CheckSquare size={16} />, label: 'Tarefas por Equipe', to: '/team-tasks' },
+  const toolsGroup = [
+    { icon: <QrCode size={16} />, label: 'Credenciamento', to: '/registration' },
+    { icon: <Megaphone size={16} />, label: 'Marketing', to: '/marketing/ads' },
+    { icon: <Bot size={16} />, label: 'IA Tools', to: '/communication/humangpt' },
+    { icon: <Puzzle size={16} />, label: 'Integrações', to: '/integrations' },
   ];
 
-  const credenciamentoGroup = [
-    { icon: <QrCode size={16} />, label: 'Geração QR/Badge', to: '/registration' },
-    { icon: <Scan size={16} />, label: 'Check-in/Check-out', to: '/checkin' },
-    { icon: <History size={16} />, label: 'Histórico de Acessos', to: '/access-history' },
-  ];
-
-  const marketingGroup = [
-    { icon: <Megaphone size={16} />, label: 'Ads', to: '/marketing/ads' },
-    { icon: <FileText size={16} />, label: 'Conteúdo', to: '/marketing/content' },
-    { icon: <Mail size={16} />, label: 'E-mail', to: '/marketing/email' },
-    { icon: <Globe size={16} />, label: 'Pages', to: '/marketing/pages' },
-  ];
-
-  const comunicacaoGroup = [
-    { icon: <Bot size={16} />, label: 'HumanGPT', to: '/communication/humangpt' },
-    { icon: <LinkIcon size={16} />, label: 'LinkAI', to: '/communication/linkai' },
-    { icon: <Bell size={16} />, label: 'Notificações', to: '/communication/notifications' },
-  ];
-
-  const analyticsGroup = [
-    { icon: <BarChart3 size={16} />, label: 'Dashboards', to: '/analytics' },
-    { icon: <TrendingUp size={16} />, label: 'Relatórios', to: '/reports' },
-    { icon: <MessageSquare size={16} />, label: 'NPS & Feedbacks', to: '/analytics/nps' },
-    { icon: <Activity size={16} />, label: 'Mapa de Calor', to: '/analytics/heatmap' },
-    { icon: <Zap size={16} />, label: 'Engajamento', to: '/analytics/engagement' },
-  ];
-
-  const integracaoGroup = [
-    { icon: <Puzzle size={16} />, label: 'Marketplace', to: '/integrations' },
-    { icon: <Activity size={16} />, label: 'APIs', to: '/api-management' },
-  ];
-
-  const automacaoGroup = [
-    { icon: <Eye size={16} />, label: 'Validador IA Stands', to: '/ai-validator' },
-    { icon: <Activity size={16} />, label: 'Heatmap & Incident AI', to: '/heatmap' },
-    { icon: <DollarSign size={16} />, label: 'Pricing Dinâmico', to: '/dynamic-pricing' },
-    { icon: <Zap size={16} />, label: 'Módulos LEGAL AI', to: '/legal-ai' },
+  const systemGroup = [
+    { icon: <Settings size={16} />, label: 'Configurações', to: '/settings' },
+    { icon: <HelpCircle size={16} />, label: 'Suporte', to: '/help' },
   ];
 
   return (
     <div className={cn(
-      "flex flex-col legal-gradient-bg text-white transition-all h-screen shadow-2xl",
+      "flex flex-col bg-white border-r border-slate-200/60 transition-all duration-300 h-screen shadow-sm",
       isCollapsed ? "w-20" : "w-80"
     )}>
-      {/* Fixed Header */}
-      <div className="flex items-center h-20 px-6 border-b border-white/10 relative z-20 bg-gradient-to-r from-[#4D2BFB] to-[#020CBC] shrink-0">
+      {/* Header Fixo */}
+      <div className="flex items-center h-20 px-6 border-b border-slate-200/60 shrink-0 bg-gradient-to-r from-slate-50 to-white">
         {!isCollapsed && (
-          <div className="flex-1 relative z-10">
-            <h1 className="text-2xl font-black text-white mb-1">EVENTRIX™</h1>
+          <div className="flex-1">
+            <h1 className="text-2xl font-black bg-gradient-to-r from-primary via-secondary to-tertiary bg-clip-text text-transparent mb-1">
+              EVENTRIX™
+            </h1>
             <div className="flex items-center gap-2">
-              <Zap size={12} className="text-secondary" />
-              <span className="text-xs font-semibold text-white/80">Powered by LEGAL AI</span>
+              <Zap size={12} className="text-primary" />
+              <span className="text-xs font-semibold text-slate-600">Powered by LEGAL AI</span>
             </div>
           </div>
         )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-3 rounded-xl hover:bg-white/20 transition-all duration-300 hover:scale-110 relative z-10"
+          className="p-3 rounded-xl hover:bg-slate-100 transition-all duration-300 hover:scale-110 text-slate-600 hover:text-slate-900"
         >
           {isCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
         </button>
       </div>
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-hidden relative z-10">
-        <div className="h-full overflow-y-auto pt-6 px-4 pb-6">
-          <nav className="space-y-3">
-            {/* Main Navigation */}
-            {mainNavigation.map((item) => (
+      {/* Conteúdo de Navegação */}
+      <div className="flex-1 px-4 py-6 space-y-6 overflow-hidden">
+        {/* Navegação Principal */}
+        <div className="space-y-1">
+          {coreNavigation.map((item) => (
+            <SidebarItem
+              key={item.to}
+              icon={item.icon}
+              label={item.label}
+              to={item.to}
+              isCollapsed={isCollapsed}
+              isActive={location.pathname === item.to}
+              badge={item.badge}
+            />
+          ))}
+        </div>
+
+        {/* Separador Visual */}
+        {!isCollapsed && <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />}
+
+        {/* Grupos Organizados */}
+        <div className="space-y-4">
+          <SidebarGroup
+            icon={<Users size={16} />}
+            label="Usuários"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.users}
+            onToggle={() => toggleGroup('users')}
+            priority="high"
+          >
+            {usersGroup.map((item) => (
               <SidebarItem
                 key={item.to}
                 icon={item.icon}
@@ -225,230 +242,76 @@ const Sidebar = () => {
                 isActive={location.pathname === item.to}
               />
             ))}
+          </SidebarGroup>
 
-            <div className="h-6" />
+          <SidebarGroup
+            icon={<Calendar size={16} />}
+            label="Conteúdo"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.content}
+            onToggle={() => toggleGroup('content')}
+          >
+            {contentGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
 
-            {/* All navigation groups */}
-            <SidebarGroup
-              icon={<Calendar size={16} />}
-              label="Eventos"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.eventos}
-              onToggle={() => toggleGroup('eventos')}
-            >
-              {eventosGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
+          <SidebarGroup
+            icon={<Zap size={16} />}
+            label="Ferramentas"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.tools}
+            onToggle={() => toggleGroup('tools')}
+          >
+            {toolsGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
 
-            <SidebarGroup
-              icon={<Users size={16} />}
-              label="Usuários"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.usuarios}
-              onToggle={() => toggleGroup('usuarios')}
-            >
-              {usuariosGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<Calendar size={16} />}
-              label="Agenda/Programação"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.agenda}
-              onToggle={() => toggleGroup('agenda')}
-            >
-              {agendaGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<CheckSquare size={16} />}
-              label="Tarefas"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.tarefas}
-              onToggle={() => toggleGroup('tarefas')}
-            >
-              {tarefasGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<QrCode size={16} />}
-              label="Credenciamento"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.credenciamento}
-              onToggle={() => toggleGroup('credenciamento')}
-            >
-              {credenciamentoGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<Megaphone size={16} />}
-              label="Marketing"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.marketing}
-              onToggle={() => toggleGroup('marketing')}
-            >
-              {marketingGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<MessageSquare size={16} />}
-              label="Comunicação"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.comunicacao}
-              onToggle={() => toggleGroup('comunicacao')}
-            >
-              {comunicacaoGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<TrendingUp size={16} />}
-              label="Analytics & Relatórios"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.analytics}
-              onToggle={() => toggleGroup('analytics')}
-            >
-              {analyticsGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<Puzzle size={16} />}
-              label="Integrações"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.integracao}
-              onToggle={() => toggleGroup('integracao')}
-            >
-              {integracaoGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup
-              icon={<Zap size={16} />}
-              label="Automação & IA"
-              isCollapsed={isCollapsed}
-              isOpen={openGroups.automacao}
-              onToggle={() => toggleGroup('automacao')}
-            >
-              {automacaoGroup.map((item) => (
-                <SidebarItem
-                  key={item.to}
-                  icon={item.icon}
-                  label={item.label}
-                  to={item.to}
-                  isCollapsed={isCollapsed}
-                  isActive={location.pathname === item.to}
-                />
-              ))}
-            </SidebarGroup>
-
-            <div className="h-6" />
-
-            {/* Fixed Items */}
-            <SidebarItem
-              icon={<Settings size={20} />}
-              label="Configurações"
-              to="/settings"
-              isCollapsed={isCollapsed}
-              isActive={location.pathname === '/settings'}
-            />
-
-            <SidebarItem
-              icon={<HelpCircle size={20} />}
-              label="Ajuda & Suporte"
-              to="/help"
-              isCollapsed={isCollapsed}
-              isActive={location.pathname === '/help'}
-            />
-          </nav>
+          <SidebarGroup
+            icon={<Settings size={16} />}
+            label="Sistema"
+            isCollapsed={isCollapsed}
+            isOpen={openGroups.system}
+            onToggle={() => toggleGroup('system')}
+          >
+            {systemGroup.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+          </SidebarGroup>
         </div>
       </div>
 
-      {/* Fixed Footer */}
-      <div className="p-4 border-t border-white/10 relative z-20 bg-gradient-to-r from-[#4D2BFB] to-[#020CBC] shrink-0">
+      {/* Footer Fixo */}
+      <div className="p-4 border-t border-slate-200/60 shrink-0 bg-gradient-to-r from-white to-slate-50">
         <div className={cn(
-          "legal-sidebar-item mt-auto cursor-pointer hover:bg-red-500/20 text-white/80 hover:text-white",
+          "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300",
+          "text-red-600 hover:text-red-700 hover:bg-red-50 hover:shadow-sm",
           isCollapsed ? "justify-center px-3" : "px-4"
         )}>
-          <LogOut size={20} />
-          {!isCollapsed && <span className="font-medium">Sair</span>}
+          <LogOut size={16} />
+          {!isCollapsed && <span className="font-medium text-sm">Sair</span>}
         </div>
       </div>
     </div>
