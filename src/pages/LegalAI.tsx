@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Shield, FileText, Check, AlertTriangle, FileClock, Brain, Download, Filter } from 'lucide-react';
+import { Shield, FileText, Check, AlertTriangle, FileClock, Brain, Download, Filter, Eye, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import KpiCard from '@/components/ui-custom/KpiCard';
+import LegalGPT from '@/components/ai-tools/LegalGPT';
 
 const LegalAI = () => {
   const [selectedDocType, setSelectedDocType] = useState('contracts');
@@ -351,7 +351,7 @@ const LegalAI = () => {
                       <h3 className="font-semibold">Em Revisão</h3>
                       <p className="text-3xl font-bold mt-2">11</p>
                       <p className="text-sm text-muted-foreground">contratos</p>
-                    </CardContent>
+                    </Card>
                   </Card>
                   <Card>
                     <CardContent className="p-4 text-center">
@@ -361,7 +361,7 @@ const LegalAI = () => {
                       <h3 className="font-semibold">Pendentes</h3>
                       <p className="text-3xl font-bold mt-2">3</p>
                       <p className="text-sm text-muted-foreground">contratos</p>
-                    </CardContent>
+                    </Card>
                   </Card>
                 </div>
               </CardContent>
@@ -462,74 +462,15 @@ const LegalAI = () => {
           </TabsContent>
 
           <TabsContent value="templates" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  title: 'Contrato de Expositor',
-                  icon: '📄',
-                  description: 'Template completo para expositores com cláusulas de responsabilidade',
-                  lastUpdated: '12/01/2024'
-                },
-                {
-                  title: 'Termo de Confidencialidade',
-                  icon: '🔒',
-                  description: 'NDA padrão para staff e fornecedores',
-                  lastUpdated: '10/01/2024'
-                },
-                {
-                  title: 'Autorização de Uso de Imagem',
-                  icon: '📸',
-                  description: 'Documento para autorização de uso de imagem em marketing',
-                  lastUpdated: '08/01/2024'
-                },
-                {
-                  title: 'Contrato de Patrocínio',
-                  icon: '💼',
-                  description: 'Template para diferentes níveis de patrocínio',
-                  lastUpdated: '05/01/2024'
-                },
-                {
-                  title: 'Política de Privacidade',
-                  icon: '🔐',
-                  description: 'Documento em conformidade com LGPD',
-                  lastUpdated: '04/01/2024'
-                },
-                {
-                  title: 'Contrato de Prestação de Serviços',
-                  icon: '🛠️',
-                  description: 'Template para fornecedores e prestadores',
-                  lastUpdated: '03/01/2024'
-                }
-              ].map((template, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{template.icon}</span>
-                        <CardTitle className="text-lg">{template.title}</CardTitle>
-                      </div>
-                      <Badge variant="outline">Template</Badge>
-                    </div>
-                    <CardDescription>{template.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground mb-4">
-                      Atualizado em {template.lastUpdated}
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="default" size="sm" className="flex-1">
-                        <Download className="h-3 w-3 mr-1" />
-                        Baixar
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Visualizar
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Templates Jurídicos</CardTitle>
+                <CardDescription>Modelos pré-aprovados pela IA jurídica</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <LegalGPT />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

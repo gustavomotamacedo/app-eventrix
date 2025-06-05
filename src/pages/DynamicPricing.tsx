@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { DollarSign, TrendingUp, Target, Brain, Zap, BarChart3, Settings, AlertCircle } from 'lucide-react';
+import { DollarSign, TrendingUp, Target, Brain, Zap, BarChart3, Settings, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -321,7 +320,7 @@ const DynamicPricing = () => {
                         <h4 className="font-semibold">{product.name}</h4>
                         <Badge variant={
                           product.status === 'Otimizado' ? 'default' : 
-                          product.status === 'Aumentando' ? 'success' : 
+                          product.status === 'Aumentando' ? 'default' : 
                           product.status === 'Reduzindo' ? 'secondary' : 'outline'
                         }>
                           {product.status}
@@ -529,7 +528,7 @@ const DynamicPricing = () => {
                 
                 <div className="bg-blue-50 p-4 rounded-lg mt-6">
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-blue-700 mt-0.5" />
+                    <AlertTriangle className="h-5 w-5 text-blue-700 mt-0.5" />
                     <div>
                       <h4 className="font-semibold text-blue-900 mb-1">Insight de Mercado</h4>
                       <p className="text-sm text-blue-700">

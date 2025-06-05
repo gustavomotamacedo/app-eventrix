@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BarChart3, TrendingUp, Users, DollarSign, Calendar, Filter, Download } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -173,7 +172,7 @@ const Analytics = () => {
           <ChartCard
             title="Satisfação dos Participantes"
             subtitle="Distribuição de feedback recebido"
-            type="pie"
+            type="bar"
             data={satisfactionData}
             height={300}
           />
