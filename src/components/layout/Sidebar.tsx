@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -60,19 +59,19 @@ interface SidebarGroupProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, isCollapsed, isActive }) => (
   <Link to={to} className={cn(
-    "hubx-sidebar-item",
+    "legal-sidebar-item",
     isActive && "active",
-    isCollapsed ? "justify-center" : ""
+    isCollapsed ? "justify-center px-3" : "px-4"
   )}>
     <div className="w-5 h-5">{icon}</div>
-    {!isCollapsed && <span>{label}</span>}
+    {!isCollapsed && <span className="font-semibold">{label}</span>}
   </Link>
 );
 
 const SidebarGroup: React.FC<SidebarGroupProps> = ({ icon, label, children, isCollapsed, isOpen, onToggle }) => {
   if (isCollapsed) {
     return (
-      <div className="space-y-1">
+      <div className="space-y-2">
         {children}
       </div>
     );
@@ -80,14 +79,16 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({ icon, label, children, isCo
 
   return (
     <Collapsible open={isOpen} onOpenChange={onToggle}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-medium text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent rounded-md">
-        <div className="flex items-center gap-2">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 text-sm font-bold text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300">
+        <div className="flex items-center gap-3">
           <div className="w-4 h-4">{icon}</div>
           <span>{label}</span>
         </div>
-        {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        <div className="transition-transform duration-300">
+          {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </div>
       </CollapsibleTrigger>
-      <CollapsibleContent className="space-y-1 ml-6">
+      <CollapsibleContent className="space-y-1 ml-6 mt-2">
         {children}
       </CollapsibleContent>
     </Collapsible>
@@ -187,25 +188,29 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "flex flex-col bg-sidebar text-sidebar-foreground transition-all min-h-full",
-      isCollapsed ? "w-16" : "w-72"
+      "flex flex-col legal-gradient-bg text-white transition-all min-h-full shadow-2xl",
+      isCollapsed ? "w-20" : "w-80"
     )}>
-      <div className="flex items-center h-16 px-4 sticky top-0 bg-sidebar z-10">
+      <div className="flex items-center h-20 px-6 sticky top-0 z-10 border-b border-white/10">
         {!isCollapsed && (
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-sidebar-foreground">Eventrix™</h1>
+            <h1 className="text-2xl font-black text-white mb-1">EVENTRIX™</h1>
+            <div className="flex items-center gap-2">
+              <Zap size={12} className="text-secondary" />
+              <span className="text-xs font-semibold text-white/80">Powered by LEGAL AI</span>
+            </div>
           </div>
         )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-2 rounded-md hover:bg-sidebar-accent"
+          className="p-3 rounded-xl hover:bg-white/20 transition-all duration-300 hover:scale-110"
         >
-          {isCollapsed ? <ChevronsRight size={18} /> : <ChevronsLeft size={18} />}
+          {isCollapsed ? <ChevronsRight size={20} /> : <ChevronsLeft size={20} />}
         </button>
       </div>
 
-      <div className="flex-1 pt-2 px-3 pb-20">
-        <nav className="space-y-2">
+      <div className="flex-1 pt-6 px-4 pb-20 overflow-y-auto">
+        <nav className="space-y-3">
           {/* Main Navigation */}
           {mainNavigation.map((item) => (
             <SidebarItem
@@ -218,9 +223,9 @@ const Sidebar = () => {
             />
           ))}
 
-          <div className="h-4" />
+          <div className="h-6" />
 
-          {/* Eventos Group */}
+          {/* All navigation groups with enhanced styling */}
           <SidebarGroup
             icon={<Calendar size={16} />}
             label="Eventos"
@@ -240,7 +245,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Usuários Group */}
           <SidebarGroup
             icon={<Users size={16} />}
             label="Usuários"
@@ -260,7 +264,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Agenda Group */}
           <SidebarGroup
             icon={<Calendar size={16} />}
             label="Agenda/Programação"
@@ -280,7 +283,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Tarefas Group */}
           <SidebarGroup
             icon={<CheckSquare size={16} />}
             label="Tarefas"
@@ -300,7 +302,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Credenciamento Group */}
           <SidebarGroup
             icon={<QrCode size={16} />}
             label="Credenciamento"
@@ -320,7 +321,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Marketing Group */}
           <SidebarGroup
             icon={<Megaphone size={16} />}
             label="Marketing"
@@ -340,7 +340,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Comunicação Group */}
           <SidebarGroup
             icon={<MessageSquare size={16} />}
             label="Comunicação"
@@ -360,7 +359,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Analytics Group */}
           <SidebarGroup
             icon={<TrendingUp size={16} />}
             label="Analytics & Relatórios"
@@ -380,7 +378,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Integração Group */}
           <SidebarGroup
             icon={<Puzzle size={16} />}
             label="Integrações"
@@ -400,7 +397,6 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          {/* Automação Group */}
           <SidebarGroup
             icon={<Zap size={16} />}
             label="Automação & IA"
@@ -420,7 +416,7 @@ const Sidebar = () => {
             ))}
           </SidebarGroup>
 
-          <div className="h-4" />
+          <div className="h-6" />
 
           {/* Fixed Items */}
           <SidebarItem
@@ -441,13 +437,13 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="p-3 sticky bottom-0 bg-sidebar">
+      <div className="p-4 sticky bottom-0 border-t border-white/10">
         <div className={cn(
-          "hubx-sidebar-item mt-auto cursor-pointer",
-          isCollapsed ? "justify-center" : ""
+          "legal-sidebar-item mt-auto cursor-pointer hover:bg-red-500/20",
+          isCollapsed ? "justify-center px-3" : "px-4"
         )}>
           <LogOut size={20} />
-          {!isCollapsed && <span>Sair</span>}
+          {!isCollapsed && <span className="font-semibold">Sair</span>}
         </div>
       </div>
     </div>

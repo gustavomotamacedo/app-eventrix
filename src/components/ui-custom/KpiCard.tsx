@@ -16,32 +16,36 @@ interface KpiCardProps {
 
 const KpiCard: React.FC<KpiCardProps> = ({ title, value, icon, trend, className }) => {
   return (
-    <div className={cn('hubx-card p-5', className)}>
+    <div className={cn('relative overflow-hidden', className)}>
       <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <h3 className="text-2xl font-bold mt-2">{value}</h3>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-muted-foreground mb-2">{title}</p>
+          <h3 className="text-3xl font-black text-tertiary mb-4 tracking-tight">{value}</h3>
           
           {trend && (
-            <div className="flex items-center mt-3">
-              {trend.isPositive ? (
-                <ArrowUp className="h-3 w-3 text-green-500 mr-1" />
-              ) : (
-                <ArrowDown className="h-3 w-3 text-red-500 mr-1" />
-              )}
-              <span className={cn(
-                'text-xs font-medium',
-                trend.isPositive ? 'text-green-500' : 'text-red-500'
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                'flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold',
+                trend.isPositive 
+                  ? 'bg-green-100 text-green-700' 
+                  : 'bg-red-100 text-red-700'
               )}>
-                {Math.abs(trend.value)}% desde o mês passado
-              </span>
+                {trend.isPositive ? (
+                  <ArrowUp className="h-3 w-3" />
+                ) : (
+                  <ArrowDown className="h-3 w-3" />
+                )}
+                <span>{Math.abs(trend.value)}%</span>
+              </div>
+              <span className="text-xs text-muted-foreground">vs mês anterior</span>
             </div>
           )}
         </div>
         
-        <div className="bg-primary/10 p-2 rounded-md">
+        <div className="legal-gradient-bg p-4 rounded-2xl legal-animate-float">
           {React.cloneElement(icon as React.ReactElement, { 
-            className: "h-6 w-6 text-primary" 
+            className: "h-7 w-7 text-white",
+            size: 28
           })}
         </div>
       </div>
