@@ -36,7 +36,15 @@ import {
   Globe,
   Bot,
   Link as LinkIcon,
-  Star
+  Star,
+  Building,
+  Briefcase,
+  PresentationChart,
+  Clock,
+  Headphones,
+  BookOpen,
+  Target,
+  Package
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -48,6 +56,7 @@ interface SidebarItemProps {
   isCollapsed: boolean;
   isActive: boolean;
   badge?: string;
+  isHighlighted?: boolean;
 }
 
 interface SidebarGroupProps {
@@ -60,11 +69,20 @@ interface SidebarGroupProps {
   priority?: 'high' | 'medium' | 'low';
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, isCollapsed, isActive, badge }) => (
+const SidebarItem: React.FC<SidebarItemProps> = ({ 
+  icon, 
+  label, 
+  to, 
+  isCollapsed, 
+  isActive, 
+  badge, 
+  isHighlighted = false 
+}) => (
   <Link to={to} className={cn(
     "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative",
     "text-slate-600 hover:text-slate-900 hover:bg-white/80 hover:shadow-sm",
     isActive && "bg-gradient-to-r from-primary/10 to-primary/5 text-primary border border-primary/20 shadow-sm",
+    isHighlighted && "bg-gradient-to-r from-secondary/10 to-secondary/5 text-secondary border border-secondary/20 font-semibold",
     isCollapsed ? "justify-center px-3" : "px-4"
   )}>
     <div className="w-4 h-4 flex-shrink-0">{icon}</div>
@@ -72,7 +90,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, to, isCollapsed,
       <>
         <span className="font-medium text-sm truncate">{label}</span>
         {badge && (
-          <span className="ml-auto bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-medium">
+          <span className={cn(
+            "ml-auto text-xs px-2 py-0.5 rounded-full font-medium",
+            isHighlighted ? "bg-secondary/10 text-secondary" : "bg-primary/10 text-primary"
+          )}>
             {badge}
           </span>
         )}
@@ -106,7 +127,8 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({
       <CollapsibleTrigger className={cn(
         "flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300 group",
         "text-slate-700 hover:text-slate-900 hover:bg-slate-50/80",
-        priority === 'high' && "bg-gradient-to-r from-primary/5 to-transparent"
+        priority === 'high' && "bg-gradient-to-r from-primary/5 to-transparent",
+        isOpen && "bg-slate-50/60"
       )}>
         <div className="flex items-center gap-3">
           <div className="w-4 h-4 text-slate-500 group-hover:text-slate-700">{icon}</div>
@@ -128,95 +150,149 @@ const SidebarGroup: React.FC<SidebarGroupProps> = ({
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    core: true,
-    users: false,
-    content: false,
-    communication: false,
-    marketing: false,
-    analytics: false,
-    tools: false,
-    system: false
-  });
+  const [activeGroup, setActiveGroup] = useState<string>('dashboard');
   const location = useLocation();
 
   const toggleGroup = (group: string) => {
-    setOpenGroups(prev => ({
-      ...prev,
-      [group]: !prev[group]
-    }));
+    setActiveGroup(activeGroup === group ? '' : group);
   };
 
-  // Navegação principal (sempre visível)
-  const coreNavigation = [
-    { icon: <Home size={16} />, label: 'Dashboard', to: '/dashboard' },
-    { icon: <Calendar size={16} />, label: 'Eventos', to: '/events', badge: 'Nova' },
-    { icon: <BarChart3 size={16} />, label: 'Analytics', to: '/analytics' },
+  // Dashboard - sempre visível
+  const dashboardItem = { icon: <Home size={16} />, label: 'Dashboard', to: '/dashboard' };
+
+  // Eventos - sempre visível com destaque para "Novo Evento"
+  const eventsItems = [
+    { icon: <Calendar size={16} />, label: 'Lista de Eventos', to: '/events' },
+    { icon: <Plus size={16} />, label: 'Novo Evento', to: '/events/new', highlighted: true, badge: 'Novo' },
   ];
 
-  // Grupo de usuários
-  const usersGroup = [
-    { icon: <Users size={16} />, label: 'Expositores', to: '/exhibitors' },
-    { icon: <UserCheck size={16} />, label: 'Visitantes', to: '/visitors' },
-    { icon: <UserPlus size={16} />, label: 'Staff', to: '/staff' },
-    { icon: <Users size={16} />, label: 'Fornecedores', to: '/suppliers' },
-    { icon: <Shield size={16} />, label: 'Permissões', to: '/permissions' },
-  ];
-
-  // Grupo de conteúdo
-  const contentGroup = [
-    { icon: <Calendar size={16} />, label: 'Palestras', to: '/lectures' },
-    { icon: <Activity size={16} />, label: 'Trilhas', to: '/tracks' },
-    { icon: <Activity size={16} />, label: 'Atividades', to: '/activities' },
-    { icon: <MapPin size={16} />, label: 'Locais', to: '/venues' },
-    { icon: <CheckSquare size={16} />, label: 'Checklist', to: '/checklist' },
-    { icon: <CheckSquare size={16} />, label: 'Tarefas por Equipe', to: '/team-tasks' },
-  ];
-
-  // Grupo de comunicação
-  const communicationGroup = [
-    { icon: <Bot size={16} />, label: 'HumanGPT', to: '/communication/humangpt' },
-    { icon: <LinkIcon size={16} />, label: 'LinkAI', to: '/communication/linkai' },
-    { icon: <Bell size={16} />, label: 'Notificações', to: '/communication/notifications' },
-  ];
-
-  // Grupo de marketing
-  const marketingGroup = [
-    { icon: <Megaphone size={16} />, label: 'Marketing', to: '/marketing' },
-    { icon: <Megaphone size={16} />, label: 'Anúncios', to: '/marketing/ads' },
-    { icon: <FileText size={16} />, label: 'Conteúdo', to: '/marketing/content' },
-    { icon: <Mail size={16} />, label: 'Email', to: '/marketing/email' },
-    { icon: <Globe size={16} />, label: 'Landing Pages', to: '/marketing/pages' },
-  ];
-
-  // Grupo de analytics
-  const analyticsGroup = [
-    { icon: <BarChart3 size={16} />, label: 'Analytics', to: '/analytics' },
-    { icon: <FileText size={16} />, label: 'Relatórios', to: '/reports' },
-    { icon: <Star size={16} />, label: 'NPS', to: '/analytics/nps' },
-    { icon: <Eye size={16} />, label: 'Heatmap', to: '/analytics/heatmap' },
-    { icon: <TrendingUp size={16} />, label: 'Engajamento', to: '/analytics/engagement' },
-  ];
-
-  // Grupo de ferramentas
-  const toolsGroup = [
-    { icon: <QrCode size={16} />, label: 'Credenciamento', to: '/registration' },
-    { icon: <Scan size={16} />, label: 'Check-in', to: '/checkin' },
-    { icon: <History size={16} />, label: 'Histórico de Acessos', to: '/access-history' },
-    { icon: <Activity size={16} />, label: 'Live Ops', to: '/live-ops' },
-    { icon: <DollarSign size={16} />, label: 'Financeiro', to: '/finance' },
-    { icon: <Puzzle size={16} />, label: 'Marketplace', to: '/integrations' },
-    { icon: <Globe size={16} />, label: 'API Management', to: '/api-management' },
-    { icon: <Bot size={16} />, label: 'AI Validator', to: '/ai-validator' },
-    { icon: <Eye size={16} />, label: 'Heatmap AI', to: '/heatmap' },
-    { icon: <DollarSign size={16} />, label: 'Dynamic Pricing', to: '/dynamic-pricing' },
-    { icon: <Shield size={16} />, label: 'Legal AI', to: '/legal-ai' },
-  ];
-
-  // Grupo de sistema
-  const systemGroup = [
-    { icon: <Settings size={16} />, label: 'Configurações', to: '/settings' },
-    { icon: <HelpCircle size={16} />, label: 'Suporte', to: '/help' },
+  // Grupos organizados conforme especificação
+  const menuGroups = [
+    {
+      id: 'users',
+      icon: <Users size={16} />,
+      label: 'Usuários',
+      priority: 'high' as const,
+      items: [
+        { icon: <Building size={16} />, label: 'Expositores', to: '/exhibitors' },
+        { icon: <Briefcase size={16} />, label: 'Fornecedores', to: '/suppliers' },
+        { icon: <Shield size={16} />, label: 'Permissões e Perfis', to: '/permissions' },
+        { icon: <UserPlus size={16} />, label: 'Staff', to: '/staff' },
+        { icon: <UserCheck size={16} />, label: 'Visitantes', to: '/visitors' },
+      ]
+    },
+    {
+      id: 'agenda',
+      icon: <Calendar size={16} />,
+      label: 'Agenda',
+      priority: 'high' as const,
+      items: [
+        { icon: <Activity size={16} />, label: 'Atividades', to: '/activities' },
+        { icon: <PresentationChart size={16} />, label: 'Palestras', to: '/lectures' },
+        { icon: <MapPin size={16} />, label: 'Salas/Locais', to: '/venues' },
+        { icon: <Target size={16} />, label: 'Trilhas', to: '/tracks' },
+      ]
+    },
+    {
+      id: 'tasks',
+      icon: <CheckSquare size={16} />,
+      label: 'Tarefas',
+      priority: 'medium' as const,
+      items: [
+        { icon: <CheckSquare size={16} />, label: 'Checklist', to: '/checklist' },
+        { icon: <Users size={16} />, label: 'Por Equipe', to: '/team-tasks' },
+        { icon: <Package size={16} />, label: 'Por Fornecedor', to: '/supplier-tasks' },
+      ]
+    },
+    {
+      id: 'credentialing',
+      icon: <QrCode size={16} />,
+      label: 'Credenciamento Digital',
+      priority: 'medium' as const,
+      items: [
+        { icon: <Scan size={16} />, label: 'Check-in/Check-out', to: '/checkin' },
+        { icon: <QrCode size={16} />, label: 'Geração QR Code/Badge', to: '/registration' },
+        { icon: <History size={16} />, label: 'Histórico de Acessos', to: '/access-history' },
+      ]
+    },
+    {
+      id: 'marketing',
+      icon: <Megaphone size={16} />,
+      label: 'Marketing',
+      priority: 'medium' as const,
+      items: [
+        { icon: <Megaphone size={16} />, label: 'Ads', to: '/marketing/ads' },
+        { icon: <FileText size={16} />, label: 'Conteúdo', to: '/marketing/content' },
+        { icon: <Mail size={16} />, label: 'E-mails', to: '/marketing/email' },
+        { icon: <Globe size={16} />, label: 'Pages', to: '/marketing/pages' },
+      ]
+    },
+    {
+      id: 'communication',
+      icon: <MessageSquare size={16} />,
+      label: 'Comunicação',
+      priority: 'medium' as const,
+      items: [
+        { icon: <Bot size={16} />, label: 'HumanGPT', to: '/communication/humangpt' },
+        { icon: <Bell size={16} />, label: 'Notificações', to: '/communication/notifications' },
+      ]
+    },
+    {
+      id: 'analytics',
+      icon: <BarChart3 size={16} />,
+      label: 'Analytics & Relatórios',
+      priority: 'medium' as const,
+      items: [
+        { icon: <BarChart3 size={16} />, label: 'Dashboards', to: '/analytics' },
+        { icon: <TrendingUp size={16} />, label: 'Inteligência de Negócios', to: '/analytics/engagement' },
+        { icon: <FileText size={16} />, label: 'Relatórios', to: '/reports' },
+      ]
+    },
+    {
+      id: 'integrations',
+      icon: <Puzzle size={16} />,
+      label: 'Integrações',
+      priority: 'low' as const,
+      items: [
+        { icon: <Globe size={16} />, label: 'APIs', to: '/api-management' },
+        { icon: <Puzzle size={16} />, label: 'Plugins', to: '/integrations' },
+      ]
+    },
+    {
+      id: 'legal-ai',
+      icon: <Zap size={16} />,
+      label: 'LEGAL IA',
+      priority: 'high' as const,
+      items: [
+        { icon: <Bot size={16} />, label: 'Integrações', to: '/ai-validator' },
+        { icon: <Eye size={16} />, label: 'Heatmap & Incident', to: '/heatmap' },
+        { icon: <DollarSign size={16} />, label: 'Pricing Dinâmico', to: '/dynamic-pricing' },
+        { icon: <Shield size={16} />, label: 'Validador IA', to: '/legal-ai' },
+      ]
+    },
+    {
+      id: 'settings',
+      icon: <Settings size={16} />,
+      label: 'Configurações',
+      priority: 'low' as const,
+      items: [
+        { icon: <Building size={16} />, label: 'Dados do Organizador', to: '/settings/organizer' },
+        { icon: <Star size={16} />, label: 'Identidade Visual', to: '/settings/branding' },
+        { icon: <Shield size={16} />, label: 'LGPD', to: '/settings/privacy' },
+        { icon: <Users size={16} />, label: 'Permissões/Acesso', to: '/settings/permissions' },
+      ]
+    },
+    {
+      id: 'support',
+      icon: <HelpCircle size={16} />,
+      label: 'Ajuda & Suporte',
+      priority: 'low' as const,
+      items: [
+        { icon: <MessageSquare size={16} />, label: 'Chat do Suporte', to: '/help/chat' },
+        { icon: <HelpCircle size={16} />, label: 'FAQ', to: '/help/faq' },
+        { icon: <BookOpen size={16} />, label: 'Tutorial', to: '/help/tutorial' },
+      ]
+    }
   ];
 
   return (
@@ -245,161 +321,71 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Conteúdo de Navegação com altura fixa e scroll apenas no conteúdo */}
-      <div className="flex-1 px-4 py-6 space-y-4 overflow-y-auto">
-        {/* Navegação Principal */}
+      {/* Conteúdo de Navegação - altura fixa calculada */}
+      <div className="flex-1 px-4 py-6 space-y-3" style={{ height: 'calc(100vh - 160px)' }}>
+        {/* Dashboard - sempre visível */}
         <div className="space-y-1">
-          {coreNavigation.map((item) => (
-            <SidebarItem
-              key={item.to}
-              icon={item.icon}
-              label={item.label}
-              to={item.to}
-              isCollapsed={isCollapsed}
-              isActive={location.pathname === item.to}
-              badge={item.badge}
-            />
-          ))}
+          <SidebarItem
+            icon={dashboardItem.icon}
+            label={dashboardItem.label}
+            to={dashboardItem.to}
+            isCollapsed={isCollapsed}
+            isActive={location.pathname === dashboardItem.to}
+          />
+        </div>
+
+        {/* Eventos - sempre visível */}
+        <div className="space-y-1">
+          <SidebarGroup
+            icon={<Calendar size={16} />}
+            label="Eventos"
+            isCollapsed={isCollapsed}
+            isOpen={activeGroup === 'events'}
+            onToggle={() => toggleGroup('events')}
+            priority="high"
+          >
+            {eventsItems.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+                badge={item.badge}
+                isHighlighted={item.highlighted}
+              />
+            ))}
+          </SidebarGroup>
         </div>
 
         {/* Separador Visual */}
         {!isCollapsed && <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />}
 
-        {/* Grupos Organizados */}
-        <div className="space-y-3">
-          <SidebarGroup
-            icon={<Users size={16} />}
-            label="Usuários"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.users}
-            onToggle={() => toggleGroup('users')}
-            priority="high"
-          >
-            {usersGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Calendar size={16} />}
-            label="Conteúdo"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.content}
-            onToggle={() => toggleGroup('content')}
-          >
-            {contentGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<MessageSquare size={16} />}
-            label="Comunicação"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.communication}
-            onToggle={() => toggleGroup('communication')}
-          >
-            {communicationGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Megaphone size={16} />}
-            label="Marketing"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.marketing}
-            onToggle={() => toggleGroup('marketing')}
-          >
-            {marketingGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<BarChart3 size={16} />}
-            label="Analytics"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.analytics}
-            onToggle={() => toggleGroup('analytics')}
-          >
-            {analyticsGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Zap size={16} />}
-            label="Ferramentas"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.tools}
-            onToggle={() => toggleGroup('tools')}
-          >
-            {toolsGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Settings size={16} />}
-            label="Sistema"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.system}
-            onToggle={() => toggleGroup('system')}
-          >
-            {systemGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
+        {/* Grupos Organizados - Sistema de Acordeão Inteligente */}
+        <div className="space-y-2">
+          {menuGroups.map((group) => (
+            <SidebarGroup
+              key={group.id}
+              icon={group.icon}
+              label={group.label}
+              isCollapsed={isCollapsed}
+              isOpen={activeGroup === group.id}
+              onToggle={() => toggleGroup(group.id)}
+              priority={group.priority}
+            >
+              {group.items.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+          ))}
         </div>
       </div>
 
