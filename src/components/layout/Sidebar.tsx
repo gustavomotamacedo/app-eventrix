@@ -188,10 +188,11 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "flex flex-col legal-gradient-bg text-white transition-all min-h-full shadow-2xl",
+      "flex flex-col legal-gradient-bg text-white transition-all h-screen shadow-2xl",
       isCollapsed ? "w-20" : "w-80"
     )}>
-      <div className="flex items-center h-20 px-6 sticky top-0 z-10 border-b border-white/10 relative">
+      {/* Fixed Header */}
+      <div className="flex items-center h-20 px-6 border-b border-white/10 relative z-20 bg-gradient-to-r from-[#4D2BFB] to-[#020CBC] shrink-0">
         {!isCollapsed && (
           <div className="flex-1 relative z-10">
             <h1 className="text-2xl font-black text-white mb-1">EVENTRIX™</h1>
@@ -209,235 +210,239 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="flex-1 pt-6 px-4 pb-20 overflow-y-auto relative z-10">
-        <nav className="space-y-3">
-          {/* Main Navigation */}
-          {mainNavigation.map((item) => (
-            <SidebarItem
-              key={item.to}
-              icon={item.icon}
-              label={item.label}
-              to={item.to}
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-hidden relative z-10">
+        <div className="h-full overflow-y-auto pt-6 px-4 pb-6">
+          <nav className="space-y-3">
+            {/* Main Navigation */}
+            {mainNavigation.map((item) => (
+              <SidebarItem
+                key={item.to}
+                icon={item.icon}
+                label={item.label}
+                to={item.to}
+                isCollapsed={isCollapsed}
+                isActive={location.pathname === item.to}
+              />
+            ))}
+
+            <div className="h-6" />
+
+            {/* All navigation groups */}
+            <SidebarGroup
+              icon={<Calendar size={16} />}
+              label="Eventos"
               isCollapsed={isCollapsed}
-              isActive={location.pathname === item.to}
+              isOpen={openGroups.eventos}
+              onToggle={() => toggleGroup('eventos')}
+            >
+              {eventosGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<Users size={16} />}
+              label="Usuários"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.usuarios}
+              onToggle={() => toggleGroup('usuarios')}
+            >
+              {usuariosGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<Calendar size={16} />}
+              label="Agenda/Programação"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.agenda}
+              onToggle={() => toggleGroup('agenda')}
+            >
+              {agendaGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<CheckSquare size={16} />}
+              label="Tarefas"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.tarefas}
+              onToggle={() => toggleGroup('tarefas')}
+            >
+              {tarefasGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<QrCode size={16} />}
+              label="Credenciamento"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.credenciamento}
+              onToggle={() => toggleGroup('credenciamento')}
+            >
+              {credenciamentoGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<Megaphone size={16} />}
+              label="Marketing"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.marketing}
+              onToggle={() => toggleGroup('marketing')}
+            >
+              {marketingGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<MessageSquare size={16} />}
+              label="Comunicação"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.comunicacao}
+              onToggle={() => toggleGroup('comunicacao')}
+            >
+              {comunicacaoGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<TrendingUp size={16} />}
+              label="Analytics & Relatórios"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.analytics}
+              onToggle={() => toggleGroup('analytics')}
+            >
+              {analyticsGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<Puzzle size={16} />}
+              label="Integrações"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.integracao}
+              onToggle={() => toggleGroup('integracao')}
+            >
+              {integracaoGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <SidebarGroup
+              icon={<Zap size={16} />}
+              label="Automação & IA"
+              isCollapsed={isCollapsed}
+              isOpen={openGroups.automacao}
+              onToggle={() => toggleGroup('automacao')}
+            >
+              {automacaoGroup.map((item) => (
+                <SidebarItem
+                  key={item.to}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isCollapsed={isCollapsed}
+                  isActive={location.pathname === item.to}
+                />
+              ))}
+            </SidebarGroup>
+
+            <div className="h-6" />
+
+            {/* Fixed Items */}
+            <SidebarItem
+              icon={<Settings size={20} />}
+              label="Configurações"
+              to="/settings"
+              isCollapsed={isCollapsed}
+              isActive={location.pathname === '/settings'}
             />
-          ))}
 
-          <div className="h-6" />
-
-          {/* All navigation groups */}
-          <SidebarGroup
-            icon={<Calendar size={16} />}
-            label="Eventos"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.eventos}
-            onToggle={() => toggleGroup('eventos')}
-          >
-            {eventosGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Users size={16} />}
-            label="Usuários"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.usuarios}
-            onToggle={() => toggleGroup('usuarios')}
-          >
-            {usuariosGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Calendar size={16} />}
-            label="Agenda/Programação"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.agenda}
-            onToggle={() => toggleGroup('agenda')}
-          >
-            {agendaGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<CheckSquare size={16} />}
-            label="Tarefas"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.tarefas}
-            onToggle={() => toggleGroup('tarefas')}
-          >
-            {tarefasGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<QrCode size={16} />}
-            label="Credenciamento"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.credenciamento}
-            onToggle={() => toggleGroup('credenciamento')}
-          >
-            {credenciamentoGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Megaphone size={16} />}
-            label="Marketing"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.marketing}
-            onToggle={() => toggleGroup('marketing')}
-          >
-            {marketingGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<MessageSquare size={16} />}
-            label="Comunicação"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.comunicacao}
-            onToggle={() => toggleGroup('comunicacao')}
-          >
-            {comunicacaoGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<TrendingUp size={16} />}
-            label="Analytics & Relatórios"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.analytics}
-            onToggle={() => toggleGroup('analytics')}
-          >
-            {analyticsGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Puzzle size={16} />}
-            label="Integrações"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.integracao}
-            onToggle={() => toggleGroup('integracao')}
-          >
-            {integracaoGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <SidebarGroup
-            icon={<Zap size={16} />}
-            label="Automação & IA"
-            isCollapsed={isCollapsed}
-            isOpen={openGroups.automacao}
-            onToggle={() => toggleGroup('automacao')}
-          >
-            {automacaoGroup.map((item) => (
-              <SidebarItem
-                key={item.to}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isCollapsed={isCollapsed}
-                isActive={location.pathname === item.to}
-              />
-            ))}
-          </SidebarGroup>
-
-          <div className="h-6" />
-
-          {/* Fixed Items */}
-          <SidebarItem
-            icon={<Settings size={20} />}
-            label="Configurações"
-            to="/settings"
-            isCollapsed={isCollapsed}
-            isActive={location.pathname === '/settings'}
-          />
-
-          <SidebarItem
-            icon={<HelpCircle size={20} />}
-            label="Ajuda & Suporte"
-            to="/help"
-            isCollapsed={isCollapsed}
-            isActive={location.pathname === '/help'}
-          />
-        </nav>
+            <SidebarItem
+              icon={<HelpCircle size={20} />}
+              label="Ajuda & Suporte"
+              to="/help"
+              isCollapsed={isCollapsed}
+              isActive={location.pathname === '/help'}
+            />
+          </nav>
+        </div>
       </div>
 
-      <div className="p-4 sticky bottom-0 border-t border-white/10 relative z-10">
+      {/* Fixed Footer */}
+      <div className="p-4 border-t border-white/10 relative z-20 bg-gradient-to-r from-[#4D2BFB] to-[#020CBC] shrink-0">
         <div className={cn(
           "legal-sidebar-item mt-auto cursor-pointer hover:bg-red-500/20 text-white/80 hover:text-white",
           isCollapsed ? "justify-center px-3" : "px-4"
