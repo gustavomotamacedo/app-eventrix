@@ -136,7 +136,7 @@ const Plans = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* Hero Section */}
       <div className="legal-gradient-bg text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
