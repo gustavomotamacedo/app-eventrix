@@ -29,8 +29,8 @@ const Sidebar = () => {
         onToggle={() => setIsCollapsed(!isCollapsed)} 
       />
 
-      {/* Conteúdo de Navegação - altura flexível */}
-      <div className="flex-1 px-4 py-6 space-y-3 overflow-y-auto">
+      {/* Conteúdo de Navegação - sem scroll */}
+      <div className="flex-1 px-4 py-4 space-y-2 min-h-0">
         {/* Dashboard - sempre visível */}
         <div className="space-y-1">
           <SidebarItem
@@ -71,7 +71,7 @@ const Sidebar = () => {
         {!isCollapsed && <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />}
 
         {/* Grupos Organizados - Sistema de Acordeão Inteligente */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           {menuGroups.map((group) => (
             <SidebarGroup
               key={group.id}

@@ -9,14 +9,14 @@ interface SidebarFooterProps {
 
 const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
   return (
-    <div className="p-4 border-t border-slate-200/60 shrink-0 bg-gradient-to-r from-white to-slate-50 mt-auto">
+    <div className="p-3 border-t border-slate-200/60 shrink-0 bg-gradient-to-r from-white to-slate-50 mt-auto">
       <div className={cn(
-        "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300",
+        "flex items-center gap-2 px-3 py-2 rounded-xl cursor-pointer transition-all duration-300",
         "text-red-600 hover:text-red-700 hover:bg-red-50 hover:shadow-sm",
-        isCollapsed ? "justify-center px-3" : "px-4"
+        isCollapsed ? "justify-center px-3" : "px-3"
       )}>
-        <LogOut size={16} />
-        {!isCollapsed && <span className="font-medium text-sm">Sair</span>}
+        <LogOut size={14} />
+        {!isCollapsed && <span className="font-medium text-xs">Sair</span>}
       </div>
     </div>
   );
