@@ -22,9 +22,9 @@ const Plans = () => {
     <div className="min-h-screen bg-background">
       <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
-      <div className="container mx-auto px-4 -mt-16 relative z-10">
+      <div className="container mx-auto px-4 py-16">
         {/* Main Plans */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-20">
           {mainPlans.map((plan) => (
             <PlanCard 
               key={plan.name} 
@@ -48,7 +48,7 @@ const Plans = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {addOnModules.map((module, index) => (
               <AddOnCard 
                 key={index} 

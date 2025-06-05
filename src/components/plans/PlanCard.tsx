@@ -30,9 +30,9 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, billingCycle, formatPrice }) 
   const monthlyEquivalent = billingCycle === 'annual' ? plan.price.annual / 12 : plan.price.monthly;
 
   return (
-    <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${
+    <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 min-h-[600px] flex flex-col ${
       plan.popular 
-        ? 'border-2 border-primary shadow-2xl scale-105 bg-gradient-to-b from-primary/5 to-secondary/5' 
+        ? 'border-2 border-primary shadow-2xl lg:scale-[1.02] bg-gradient-to-b from-primary/5 to-secondary/5' 
         : 'tech-card hover:border-primary/30'
     }`}>
       {plan.popular && (
@@ -43,7 +43,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, billingCycle, formatPrice }) 
         </div>
       )}
       
-      <CardHeader className={`text-center ${plan.popular ? 'pt-16' : 'pt-8'} pb-4`}>
+      <CardHeader className={`text-center ${plan.popular ? 'pt-16' : 'pt-8'} pb-4 flex-shrink-0`}>
         <h3 className="text-3xl font-bold text-foreground">{plan.name}</h3>
         <p className="text-muted-foreground text-lg">{plan.description}</p>
         
@@ -68,9 +68,9 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, billingCycle, formatPrice }) 
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6 px-6 pb-8">
+      <CardContent className="space-y-6 px-6 pb-8 flex-grow flex flex-col">
         {/* Features Grid */}
-        <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+        <div className="bg-muted/50 rounded-lg p-4 space-y-3 flex-shrink-0">
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div>
               <span className="text-muted-foreground">Eventos:</span>
@@ -96,7 +96,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, billingCycle, formatPrice }) 
         </div>
 
         {/* Highlights */}
-        <div className="space-y-3">
+        <div className="space-y-3 flex-grow">
           {plan.highlights.map((highlight, index) => (
             <div key={index} className="flex items-start gap-3">
               <Check size={18} className="text-primary shrink-0 mt-0.5" />
@@ -106,7 +106,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, billingCycle, formatPrice }) 
         </div>
 
         <Button 
-          className={`w-full h-12 text-base font-semibold ${
+          className={`w-full h-12 text-base font-semibold mt-auto flex-shrink-0 ${
             plan.popular 
               ? 'tech-button text-white' 
               : 'border-2 hover:border-primary hover:bg-primary hover:text-white'
