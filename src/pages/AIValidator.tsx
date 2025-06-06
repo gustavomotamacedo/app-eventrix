@@ -1,264 +1,248 @@
 
-import React, { useState } from 'react';
-import { Camera, CheckCircle, XCircle, AlertTriangle, Eye, Upload, Scan, RefreshCw } from 'lucide-react';
+import React from 'react';
+import DashboardLayout from '@/components/layout/Dashboard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import KpiCard from '@/components/ui-custom/KpiCard';
+import { Shield, CheckCircle, AlertTriangle, Clock, Bot } from 'lucide-react';
 
 const AIValidator = () => {
-  const [isScanning, setIsScanning] = useState(false);
-
-  const validationStats = {
-    totalValidations: 2847,
-    successRate: 94.2,
-    averageTime: 1.8,
-    flaggedIssues: 45
-  };
-
-  const recentValidations = [
+  const validationResults = [
     {
       id: 1,
-      standName: 'Tech Corp - A12',
-      timestamp: '14:23:45',
-      status: 'approved',
-      score: 96,
-      issues: [],
-      image: '/placeholder.svg'
+      document: 'Contrato de Patrocínio - TechCorp',
+      status: 'Aprovado',
+      confidence: 95,
+      issues: 0,
+      reviewed: '2024-01-15 14:30',
+      type: 'Contrato'
     },
     {
       id: 2,
-      standName: 'Innovation Labs - B07',
-      timestamp: '14:20:12',
-      status: 'flagged',
-      score: 72,
-      issues: ['Altura inadequada', 'Bloqueio de passagem'],
-      image: '/placeholder.svg'
+      document: 'Termo de Uso - Aplicativo',
+      status: 'Atenção',
+      confidence: 78,
+      issues: 3,
+      reviewed: '2024-01-15 12:45',
+      type: 'Legal'
     },
     {
       id: 3,
-      standName: 'Digital Solutions - C03',
-      timestamp: '14:18:30',
-      status: 'approved',
-      score: 89,
-      issues: [],
-      image: '/placeholder.svg'
-    },
-    {
-      id: 4,
-      standName: 'Future Tech - A08',
-      timestamp: '14:15:45',
-      status: 'rejected',
-      score: 45,
-      issues: ['Estrutura instável', 'Não conformidade elétrica', 'Ocupação excessiva'],
-      image: '/placeholder.svg'
+      document: 'Política de Privacidade',
+      status: 'Rejeitado',
+      confidence: 45,
+      issues: 8,
+      reviewed: '2024-01-15 09:20',
+      type: 'Legal'
     }
   ];
 
-  const validationCriteria = [
-    {
-      category: 'Segurança Estrutural',
-      weight: 30,
-      checks: ['Estabilidade da estrutura', 'Fixação adequada', 'Capacidade de carga']
-    },
-    {
-      category: 'Conformidade Elétrica',
-      weight: 25,
-      checks: ['Instalação segura', 'Certificação de equipamentos', 'Proteção contra sobrecarga']
-    },
-    {
-      category: 'Acessibilidade',
-      weight: 20,
-      checks: ['Passagens desobstruídas', 'Altura adequada', 'Acesso para PCD']
-    },
-    {
-      category: 'Normativas',
-      weight: 15,
-      checks: ['Conformidade com regulamento', 'Documentação completa', 'Licenças válidas']
-    },
-    {
-      category: 'Estética',
-      weight: 10,
-      checks: ['Alinhamento visual', 'Limpeza', 'Organização']
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Aprovado': return 'default';
+      case 'Atenção': return 'secondary';
+      case 'Rejeitado': return 'destructive';
+      default: return 'outline';
     }
-  ];
+  };
 
-  const handleStartScan = () => {
-    setIsScanning(true);
-    setTimeout(() => setIsScanning(false), 3000);
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'Aprovado': return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case 'Atenção': return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
+      case 'Rejeitado': return <AlertTriangle className="w-4 h-4 text-red-500" />;
+      default: return <Clock className="w-4 h-4 text-gray-500" />;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto p-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+    <DashboardLayout title="AI Validator">
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold">Validador IA de Stands</h1>
-            <p className="text-muted-foreground">Validação automática de conformidade e segurança usando visão computacional</p>
+            <h2 className="text-2xl font-bold flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Shield className="w-6 h-6 text-primary" />
+              </div>
+              AI Validator™
+            </h2>
+            <p className="text-muted-foreground">Validação inteligente de documentos e contratos</p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline">
-              <Upload className="h-4 w-4 mr-2" />
-              Upload Imagens
-            </Button>
-            <Button onClick={handleStartScan} disabled={isScanning}>
-              {isScanning ? (
-                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-              ) : (
-                <Scan className="h-4 w-4 mr-2" />
-              )}
-              {isScanning ? 'Escaneando...' : 'Iniciar Scan'}
-            </Button>
-          </div>
+          <Button>
+            <Bot className="w-4 h-4 mr-2" />
+            Nova Validação
+          </Button>
         </div>
 
-        {/* KPIs principais */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <KpiCard
-            title="Total de Validações"
-            value={validationStats.totalValidations.toLocaleString()}
-            icon={<Eye />}
-            trend={{ value: 12.5, isPositive: true }}
-          />
-          <KpiCard
-            title="Taxa de Aprovação"
-            value={`${validationStats.successRate}%`}
-            icon={<CheckCircle />}
-            trend={{ value: 3.2, isPositive: true }}
-          />
-          <KpiCard
-            title="Tempo Médio"
-            value={`${validationStats.averageTime}s`}
-            icon={<Camera />}
-            trend={{ value: 0.5, isPositive: false }}
-          />
-          <KpiCard
-            title="Issues Detectadas"
-            value={validationStats.flaggedIssues.toString()}
-            icon={<AlertTriangle />}
-            trend={{ value: 8, isPositive: false }}
-          />
+        {/* Validation Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Documentos Analisados</CardTitle>
+              <Shield className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">247</div>
+              <p className="text-xs text-muted-foreground">Este mês</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Taxa de Aprovação</CardTitle>
+              <CheckCircle className="h-4 w-4 text-green-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">87%</div>
+              <p className="text-xs text-muted-foreground">+5% vs mês anterior</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Tempo Médio</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">2.3min</div>
+              <p className="text-xs text-muted-foreground">Por análise</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Precisão</CardTitle>
+              <Bot className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">94.2%</div>
+              <p className="text-xs text-muted-foreground">Confiabilidade</p>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Scanner em tempo real */}
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Camera className="h-5 w-5" />
-              Scanner IA em Tempo Real
-            </CardTitle>
-            <CardDescription>Aponte a câmera para um stand e obtenha validação instantânea</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="bg-black rounded-lg aspect-video flex items-center justify-center relative overflow-hidden">
-                  {isScanning ? (
-                    <div className="text-white text-center">
-                      <div className="animate-pulse">
-                        <Camera className="h-12 w-12 mx-auto mb-2" />
-                        <p>Analisando stand...</p>
-                      </div>
-                      <div className="absolute inset-0 border-4 border-green-500 animate-pulse rounded-lg"></div>
-                    </div>
-                  ) : (
-                    <div className="text-gray-400 text-center">
-                      <Camera className="h-12 w-12 mx-auto mb-2" />
-                      <p>Clique em "Iniciar Scan" para começar</p>
-                    </div>
-                  )}
-                </div>
-                <Button 
-                  onClick={handleStartScan} 
-                  disabled={isScanning}
-                  className="w-full"
-                >
-                  {isScanning ? 'Escaneando...' : 'Escanear Stand'}
-                </Button>
-              </div>
-              
-              <div className="space-y-4">
-                <h3 className="font-semibold">Critérios de Validação</h3>
-                {validationCriteria.map((criteria, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">{criteria.category}</span>
-                      <span className="text-xs text-muted-foreground">{criteria.weight}%</span>
-                    </div>
-                    <Progress value={isScanning ? Math.random() * 100 : 0} className="h-2" />
-                    <div className="text-xs text-muted-foreground">
-                      {criteria.checks.join(' • ')}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Tabs para diferentes visualizações */}
-        <Tabs defaultValue="recent" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="recent">Validações Recentes</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="config">Configurações</TabsTrigger>
+        <Tabs defaultValue="validator" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="validator">Validar Documento</TabsTrigger>
+            <TabsTrigger value="history">Histórico</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="recent" className="space-y-6">
+          <TabsContent value="validator" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Validações Recentes</CardTitle>
-                <CardDescription>Últimas validações realizadas pelo sistema</CardDescription>
+                <CardTitle>Análise de Documento</CardTitle>
+                <CardDescription>
+                  Cole o texto do documento para validação automática
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Textarea 
+                  placeholder="Cole aqui o texto do documento que deseja validar..."
+                  className="min-h-48"
+                />
+                
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="text-sm font-medium">Tipo de Documento</label>
+                    <select className="w-full mt-1 p-2 border rounded-md">
+                      <option>Contrato de Patrocínio</option>
+                      <option>Termo de Uso</option>
+                      <option>Política de Privacidade</option>
+                      <option>Acordo de Fornecimento</option>
+                      <option>Outro</option>
+                    </select>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <label className="text-sm font-medium">Nível de Rigor</label>
+                    <select className="w-full mt-1 p-2 border rounded-md">
+                      <option>Padrão</option>
+                      <option>Alto</option>
+                      <option>Crítico</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <Button className="w-full">
+                  <Shield className="w-4 h-4 mr-2" />
+                  Iniciar Validação
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* AI Capabilities */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Capacidades da IA</CardTitle>
+                <CardDescription>O que o AI Validator pode fazer</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Análise Legal</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Verificação de cláusulas obrigatórias</li>
+                      <li>• Detecção de termos problemáticos</li>
+                      <li>• Análise de conformidade LGPD</li>
+                      <li>• Validação de linguagem jurídica</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Análise Técnica</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Consistência terminológica</li>
+                      <li>• Estrutura do documento</li>
+                      <li>• Referências cruzadas</li>
+                      <li>• Completude das informações</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="history" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Histórico de Validações</CardTitle>
+                <CardDescription>
+                  Documentos analisados pelo AI Validator
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentValidations.map((validation) => (
-                    <div key={validation.id} className="flex items-center gap-4 p-4 border rounded-lg">
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                        <Camera className="h-6 w-6 text-gray-400" />
-                      </div>
-                      
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold">{validation.standName}</h4>
-                          <Badge 
-                            variant={
-                              validation.status === 'approved' ? 'default' : 
-                              validation.status === 'flagged' ? 'secondary' : 'destructive'
-                            }
-                          >
-                            {validation.status === 'approved' && <CheckCircle className="h-3 w-3 mr-1" />}
-                            {validation.status === 'flagged' && <AlertTriangle className="h-3 w-3 mr-1" />}
-                            {validation.status === 'rejected' && <XCircle className="h-3 w-3 mr-1" />}
-                            {validation.status === 'approved' ? 'Aprovado' : 
-                             validation.status === 'flagged' ? 'Atenção' : 'Rejeitado'}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {validation.timestamp} • Score: {validation.score}/100
-                        </p>
-                        {validation.issues.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {validation.issues.map((issue, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {issue}
-                              </Badge>
-                            ))}
+                  {validationResults.map((result) => (
+                    <div key={result.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-4">
+                        {getStatusIcon(result.status)}
+                        <div>
+                          <h3 className="font-medium">{result.document}</h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant="outline" className="text-xs">
+                              {result.type}
+                            </Badge>
+                            <Badge variant={getStatusColor(result.status) as any} className="text-xs">
+                              {result.status}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              {result.issues} problemas encontrados
+                            </span>
                           </div>
-                        )}
-                      </div>
-                      
-                      <div className="text-right">
-                        <div className={`text-2xl font-bold ${
-                          validation.score >= 90 ? 'text-green-600' :
-                          validation.score >= 70 ? 'text-yellow-600' : 'text-red-600'
-                        }`}>
-                          {validation.score}
+                          <div className="text-xs text-muted-foreground mt-1">
+                            Analisado em {result.reviewed}
+                          </div>
                         </div>
-                        <div className="text-xs text-muted-foreground">Score</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-medium">{result.confidence}%</div>
+                        <div className="text-xs text-muted-foreground">Confiança</div>
+                        <Button variant="outline" size="sm" className="mt-2">
+                          Ver Relatório
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -267,96 +251,44 @@ const AIValidator = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Distribuição de Status</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                        <span>Aprovados</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-bold">2,684</span>
-                        <span className="text-sm text-muted-foreground ml-2">94.3%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                        <span>Com Atenção</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-bold">118</span>
-                        <span className="text-sm text-muted-foreground ml-2">4.1%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <XCircle className="h-4 w-4 text-red-600" />
-                        <span>Rejeitados</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-bold">45</span>
-                        <span className="text-sm text-muted-foreground ml-2">1.6%</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Issues Mais Comuns</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {[
-                    { issue: 'Altura inadequada', count: 23 },
-                    { issue: 'Bloqueio de passagem', count: 18 },
-                    { issue: 'Estrutura instável', count: 12 },
-                    { issue: 'Problemas elétricos', count: 8 },
-                    { issue: 'Documentação incompleta', count: 6 }
-                  ].map((item, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-sm">{item.issue}</span>
-                      <Badge variant="outline">{item.count}</Badge>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="config" className="space-y-6">
+          <TabsContent value="templates" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Configurações do Validador</CardTitle>
-                <CardDescription>Ajuste os parâmetros de validação da IA</CardDescription>
+                <CardTitle>Templates de Validação</CardTitle>
+                <CardDescription>
+                  Modelos pré-configurados para diferentes tipos de documento
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                {validationCriteria.map((criteria, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <label className="font-medium">{criteria.category}</label>
-                      <span className="text-sm text-muted-foreground">{criteria.weight}%</span>
-                    </div>
-                    <Progress value={criteria.weight * (100/30)} className="h-2" />
-                    <p className="text-xs text-muted-foreground">
-                      {criteria.checks.join(' • ')}
-                    </p>
-                  </div>
-                ))}
-                <Button className="w-full mt-6">Salvar Configurações</Button>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    { name: 'Contrato de Patrocínio', icon: '📄', rules: 23 },
+                    { name: 'Termo de Uso', icon: '📋', rules: 18 },
+                    { name: 'Política de Privacidade', icon: '🔒', rules: 31 },
+                    { name: 'Acordo de Fornecimento', icon: '📦', rules: 15 },
+                    { name: 'Contrato de Trabalho', icon: '👥', rules: 27 },
+                    { name: 'NDA', icon: '🤐', rules: 12 },
+                  ].map((template, index) => (
+                    <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-4 text-center">
+                        <div className="text-3xl mb-2">{template.icon}</div>
+                        <h3 className="font-medium mb-1">{template.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {template.rules} regras de validação
+                        </p>
+                        <Button variant="outline" size="sm" className="mt-3 w-full">
+                          Usar Template
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
