@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Switch } from '@/components/ui/switch';
 import KpiCard from '@/components/ui-custom/KpiCard';
+import DashboardLayout from '@/components/layout/Dashboard';
 
 const APIManagement = () => {
   const [showApiKey, setShowApiKey] = useState(false);
@@ -150,8 +151,8 @@ events = response.json()`,
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto p-6 space-y-6">
+    <DashboardLayout title="Gerenciamento de APIs">
+      <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -503,7 +504,7 @@ events = response.json()`,
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
