@@ -20,6 +20,7 @@ const Plans = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
       <div className="container mx-auto px-4 pb-8">
         {/* Main Plans - Reduced top spacing */}
