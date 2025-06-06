@@ -22,8 +22,8 @@ const Plans = () => {
     <div className="min-h-screen bg-background">
       <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Main Plans */}
+      <div className="container mx-auto px-4 pb-8">
+        {/* Main Plans - Reduced top spacing */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16">
           {mainPlans.map((plan) => (
             <PlanCard 
