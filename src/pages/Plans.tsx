@@ -22,9 +22,9 @@ const Plans = () => {
     <div className="min-h-screen bg-background">
       <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
-      <div className="container mx-auto px-4 pb-8">
-        {/* Main Plans - Reduced top spacing */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16">
+      <div className="container mx-auto px-4 pb-6 md:pb-8">
+        {/* Main Plans - Mobile First Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12 md:mb-16">
           {mainPlans.map((plan) => (
             <PlanCard 
               key={plan.name} 
@@ -36,25 +36,25 @@ const Plans = () => {
         </div>
 
         {/* Add-ons Section */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">Módulos e Serviços Plugáveis</h3>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+        <div className="mb-12 md:mb-16">
+          <div className="text-center mb-8 md:mb-12 px-4">
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">Módulos e Serviços Plugáveis</h3>
+            <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Expanda ainda mais as capacidades da plataforma com módulos especializados de IA e automação
             </p>
-            <div className="tech-badge tech-glow mt-4 text-sm">
-              <Sparkles size={16} />
+            <div className="tech-badge tech-glow mt-3 md:mt-4 text-xs md:text-sm inline-flex">
+              <Sparkles size={14} className="md:w-4 md:h-4" />
               <span>Contratação à parte - Compatível com todos os planos</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {addOnModules.map((module, index) => (
               <AddOnCard 
                 key={index} 
                 module={{
                   ...module,
-                  icon: <module.icon className="text-primary" size={24} />
+                  icon: <module.icon className="text-primary" size={20} />
                 }} 
               />
             ))}
