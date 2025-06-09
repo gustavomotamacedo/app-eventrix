@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Zap, Star, CheckCircle, TrendingUp } from 'lucide-react';
+import { Zap, Star, CheckCircle, TrendingUp, ArrowLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface PlansHeroProps {
   billingCycle: 'annual' | 'monthly';
@@ -10,8 +11,30 @@ interface PlansHeroProps {
 }
 
 const PlansHero: React.FC<PlansHeroProps> = ({ billingCycle, setBillingCycle }) => {
+  const navigate = useNavigate();
+
+  const handleBackToLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="bg-background py-6 md:py-12 px-4">
+      {/* Back to Login Button - Mobile: top left, Desktop: top right */}
+      <div className="container mx-auto mb-4 md:mb-6">
+        <div className="flex justify-start md:justify-end">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleBackToLogin}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2"
+            aria-label="Voltar para a página de login"
+          >
+            <ArrowLeft size={16} />
+            <span className="text-sm font-medium">Voltar ao login</span>
+          </Button>
+        </div>
+      </div>
+
       {/* Billing Toggle Section - Centered */}
       <div className="text-center mb-6 md:mb-8">
         <div className="inline-flex flex-col items-center gap-3 md:gap-4">
