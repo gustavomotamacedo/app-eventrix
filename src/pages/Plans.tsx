@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import PlansHero from '@/components/plans/PlansHero';
 import PlanCard from '@/components/plans/PlanCard';
+import PlanComparison from '@/components/plans/PlanComparison';
 import AddOnCard from '@/components/plans/AddOnCard';
 import PlansCTA from '@/components/plans/PlansCTA';
 import { mainPlans, addOnModules } from '@/data/plansData';
@@ -23,6 +24,11 @@ const Plans = () => {
       <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
       <div className="container mx-auto px-4 pb-6 md:pb-8">
+        {/* Plan Comparison Section */}
+        <div className="mb-12 md:mb-16">
+          <PlanComparison billingCycle={billingCycle} formatPrice={formatPrice} />
+        </div>
+
         {/* Main Plans - Mobile First Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12 md:mb-16">
           {mainPlans.map((plan) => (

@@ -118,3 +118,118 @@ export const addOnModules = [
     price: 'Sob consulta'
   }
 ];
+
+// Nova estrutura para comparação detalhada
+export const comparisonFeatures = [
+  {
+    category: 'Gestão de Eventos',
+    features: [
+      {
+        name: 'Número de eventos',
+        start: 'até 5',
+        scale: '5 a 10',
+        boom: '10 a 15',
+        enterprise: 'Ilimitado'
+      },
+      {
+        name: 'Visitantes por evento',
+        start: 'até 5.000',
+        scale: '5.001 a 25.000',
+        boom: '25.001 a 50.000',
+        enterprise: 'Ilimitado'
+      },
+      {
+        name: 'Expositores',
+        start: 'até 200',
+        scale: 'até 500',
+        boom: 'até 2.000',
+        enterprise: 'Custom'
+      }
+    ]
+  },
+  {
+    category: 'Administração',
+    features: [
+      {
+        name: 'Usuários admin',
+        start: '1',
+        scale: 'até 3',
+        boom: 'até 10',
+        enterprise: 'Ilimitado'
+      },
+      {
+        name: 'Dashboard completo',
+        start: true,
+        scale: true,
+        boom: true,
+        enterprise: true
+      },
+      {
+        name: 'Relatórios avançados',
+        start: false,
+        scale: true,
+        boom: true,
+        enterprise: true
+      }
+    ]
+  },
+  {
+    category: 'Tecnologia e IA',
+    features: [
+      {
+        name: 'Check-in básico',
+        start: true,
+        scale: true,
+        boom: true,
+        enterprise: true
+      },
+      {
+        name: 'Analytics avançados',
+        start: false,
+        scale: true,
+        boom: true,
+        enterprise: true
+      },
+      {
+        name: 'IA avançada',
+        start: false,
+        scale: false,
+        boom: true,
+        enterprise: true
+      },
+      {
+        name: 'White label',
+        start: false,
+        scale: false,
+        boom: 'Básico',
+        enterprise: 'Completo'
+      }
+    ]
+  },
+  {
+    category: 'Suporte e Integrações',
+    features: [
+      {
+        name: 'Suporte',
+        start: 'E-mail básico',
+        scale: 'E-mail + chat prioritário',
+        boom: '24/7 com SLA',
+        enterprise: 'Dedicado + SLA VIP'
+      },
+      {
+        name: 'APIs completas',
+        start: false,
+        scale: false,
+        boom: true,
+        enterprise: true
+      },
+      {
+        name: 'Integrações básicas',
+        start: false,
+        scale: true,
+        boom: true,
+        enterprise: true
+      }
+    ]
+  }
+];
