@@ -24,10 +24,6 @@ const Plans = () => {
       <PlansHero billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
 
       <div className="container mx-auto px-4 pb-6 md:pb-8">
-        {/* Plan Comparison Section */}
-        <div className="mb-12 md:mb-16">
-          <PlanComparison billingCycle={billingCycle} formatPrice={formatPrice} />
-        </div>
 
         {/* Main Plans - Mobile First Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-12 md:mb-16">
@@ -39,6 +35,11 @@ const Plans = () => {
               formatPrice={formatPrice} 
             />
           ))}
+        </div>
+
+        {/* Plan Comparison Section */}
+        <div className="mb-12 md:mb-16">
+          <PlanComparison billingCycle={billingCycle} formatPrice={formatPrice} />
         </div>
 
         {/* Add-ons Section */}
